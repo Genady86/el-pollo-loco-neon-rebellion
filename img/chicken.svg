@@ -1,0 +1,32 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="100" height="150"
+     viewBox="0 0 100 150">
+
+    <!-- Roboterkörper -->
+    <rect x="20" y="55" width="60" height="65"
+          rx="12" fill="#64748b"/>
+
+    <!-- Kopf -->
+    <rect x="15" y="15" width="70" height="55"
+          rx="15" fill="#94a3b8"/>
+
+    <!-- Rote Roboteraugen -->
+    <rect x="25" y="35" width="18" height="10"
+          fill="#ff0055"/>
+
+    <rect x="57" y="35" width="18" height="10"
+          fill="#ff0055"/>
+
+    <!-- Schnabel -->
+    <path d="M40 55 L60 55 L50 70 Z"
+          fill="#f59e0b"/>
+
+    <!-- Roboterbeine -->
+    <rect x="30" y="120" width="10" height="25"
+          fill="#00e5ff"/>
+
+    <rect x="60" y="120" width="10" height="25"
+          fill="#00e5ff"/>
+
+</svg>

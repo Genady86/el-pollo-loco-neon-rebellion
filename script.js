@@ -27,6 +27,6 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-animate();
+// animate();
 
 let world = new World(canvas);
