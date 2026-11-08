@@ -27,6 +27,30 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+let keyboard = new Keyboard();
+
+// Taste wird gedrückt
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'ArrowRight' || event.code === 'KeyD') {
+        keyboard.RIGHT = true;
+    }
+
+    if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
+        keyboard.LEFT = true;
+    }
+});
+
+// Taste wird losgelassen
+window.addEventListener('keyup', (event) => {
+    if (event.code === 'ArrowRight' || event.code === 'KeyD') {
+        keyboard.RIGHT = false;
+    }
+
+    if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
+        keyboard.LEFT = false;
+    }
+});
+
 // animate();
 
-let world = new World(canvas);
+let world = new World(canvas, keyboard);

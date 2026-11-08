@@ -30,8 +30,10 @@ class MovableObject {
     }
 
     moveRight() {
-        console.log('Moving right');
+        this.x += 5;
     }
 
-    moveLeft() {}
+    moveLeft() {
+        this.x -= 5;
+    }
 }
