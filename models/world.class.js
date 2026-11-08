@@ -35,7 +35,20 @@ class World {
 
     drawObject(object) {
         if (object.img && object.img.complete && object.img.naturalWidth > 0) {
-            this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
+            this.ctx.save();
+
+            if (object.otherDirection) {
+                // Figur horizontal spiegeln
+                this.ctx.translate(object.x + object.width, object.y);
+                this.ctx.scale(-1, 1);
+
+                this.ctx.drawImage(object.img, 0, 0, object.width, object.height);
+            } else {
+                // Figur normal zeichnen
+                this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
+            }
+
+            this.ctx.restore();
         }
     }
 }

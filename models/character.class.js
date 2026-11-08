@@ -9,6 +9,7 @@ class Character extends MovableObject {
     ];
 
     isMoving = false;
+    otherDirection = false;
 
     constructor(keyboard) {
         super();
@@ -31,6 +32,7 @@ class Character extends MovableObject {
             if (this.keyboard.RIGHT && !this.keyboard.LEFT) {
                 if (this.x < 720 - this.width) {
                     this.moveRight();
+                    this.otherDirection = false;
                     this.x = Math.min(this.x, 720 - this.width);
                     this.isMoving = true;
                 }
@@ -40,6 +42,7 @@ class Character extends MovableObject {
             if (this.keyboard.LEFT && !this.keyboard.RIGHT) {
                 if (this.x > 0) {
                     this.moveLeft();
+                    this.otherDirection = true;
                     this.x = Math.max(this.x, 0);
                     this.isMoving = true;
                 }
