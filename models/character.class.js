@@ -10,6 +10,7 @@ class Character extends MovableObject {
 
     isMoving = false;
     otherDirection = false;
+    jumpKeyWasDown = false;
 
     constructor(keyboard) {
         super();
@@ -20,12 +21,25 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.img = this.imageCache[this.IMAGES_WALKING[0]];
 
+        this.groundY = this.y;
+        this.applyGravity();
         this.animate();
+    }
+
+    /** Prüft, ob Pico springen darf. */
+    checkJump() {
+        if (this.keyboard.SPACE && !this.jumpKeyWasDown && !this.isAboveGround()) {
+            this.jump();
+        }
+
+        this.jumpKeyWasDown = this.keyboard.SPACE;
     }
 
     animate() {
         // Bewegung ungefähr 60-mal pro Sekunde prüfen
         setInterval(() => {
+            this.checkJump();
+
             this.isMoving = false;
 
             // Nach rechts laufen
