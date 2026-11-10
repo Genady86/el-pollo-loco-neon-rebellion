@@ -8,6 +8,25 @@ class Character extends MovableObject {
         'img/player/player-run-06.png',
     ];
 
+    IMAGES_IDLE = [
+        'img/player/idle/pico-idle-01.png',
+        'img/player/idle/pico-idle-02.png',
+        'img/player/idle/pico-idle-03.png',
+        'img/player/idle/pico-idle-04.png',
+    ];
+
+    IMAGES_JUMPING = [
+        'img/player/jump/pico-jump-01.png',
+        'img/player/jump/pico-jump-02.png',
+        'img/player/jump/pico-jump-03.png',
+    ];
+
+    IMAGES_FALLING = [
+        'img/player/fall/pico-fall-01.png',
+        'img/player/fall/pico-fall-02.png',
+        'img/player/fall/pico-fall-03.png',
+    ];
+
     isMoving = false;
     otherDirection = false;
     jumpKeyWasDown = false;
@@ -19,6 +38,9 @@ class Character extends MovableObject {
         this.y = 270;
 
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_FALLING);
         this.img = this.imageCache[this.IMAGES_WALKING[0]];
 
         this.groundY = this.y;
@@ -63,13 +85,16 @@ class Character extends MovableObject {
             }
         }, 1000 / 60);
 
-        // Laufanimation nur während der Bewegung
+        // Picos passende Animation auswählen
         setInterval(() => {
-            if (this.isMoving) {
+            if (this.isAboveGround() && this.speedY > 0) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            } else if (this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_FALLING);
+            } else if (this.isMoving) {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
-                this.img = this.imageCache[this.IMAGES_WALKING[0]];
-                this.currentImage = 0;
+                this.playAnimation(this.IMAGES_IDLE);
             }
         }, 120);
     }
