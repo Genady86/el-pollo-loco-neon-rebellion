@@ -5,7 +5,7 @@ class Chicken extends MovableObject {
     constructor() {
         super();
 
-        this.loadImage('img/chicken.svg');
+        this.loadImage('img/enemies/pollo-bandido-idle-01.png');
 
         // Zufällige Startposition
         this.x = 200 + Math.random() * 350;
