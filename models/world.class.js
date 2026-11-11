@@ -26,20 +26,23 @@ class World {
         this.draw();
     }
 
+    /** Zeichnet die komplette Spielwelt. */
     draw() {
+        // Alte Bilder entfernen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Pico zeichnen
         this.drawObject(this.character);
 
+        // Lebende und sterbende Gegner zeichnen
         this.enemies.forEach((enemy) => {
-            if (!enemy.isDead) {
+            if (!enemy.isRemoved) {
                 this.drawObject(enemy);
             }
         });
 
-        requestAnimationFrame(() => {
-            this.draw();
-        });
+        // Nächstes Bild zeichnen
+        requestAnimationFrame(() => this.draw());
     }
 
     drawObject(object) {
@@ -86,7 +89,7 @@ class World {
     reportCollision(enemy) {
         if (this.character.isStomping(enemy)) {
             // Bandit besiegt
-            enemy.isDead = true;
+            enemy.die();
 
             // Pico springt nach dem Treffer wieder hoch
             this.character.speedY = 15;
