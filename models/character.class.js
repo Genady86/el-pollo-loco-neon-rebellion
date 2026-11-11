@@ -47,6 +47,12 @@ class Character extends MovableObject {
         this.y = 270;
         this.groundY = this.y;
 
+        // Picos Kollisionsbereich
+        this.offsetLeft = 25;
+        this.offsetRight = 25;
+        this.offsetTop = 20;
+        this.offsetBottom = 15;
+
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_JUMPING);

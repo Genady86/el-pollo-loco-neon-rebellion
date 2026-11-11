@@ -10,6 +10,10 @@ class MovableObject {
     speedY = 0;
     acceleration = 2.5;
     groundY = 270;
+    offsetTop = 0;
+    offsetBottom = 0;
+    offsetLeft = 0;
+    offsetRight = 0;
 
     loadImage(path) {
         this.img = new Image();
@@ -65,13 +69,13 @@ class MovableObject {
         this.x -= 5;
     }
 
-    /** Prüft, ob dieses Objekt ein anderes berührt. */
+    /** Prüft die Kollision mit angepassten Hitboxen. */
     isColliding(other) {
         return (
-            this.x < other.x + other.width &&
-            this.x + this.width > other.x &&
-            this.y < other.y + other.height &&
-            this.y + this.height > other.y
+            this.x + this.offsetLeft < other.x + other.width - other.offsetRight &&
+            this.x + this.width - this.offsetRight > other.x + other.offsetLeft &&
+            this.y + this.offsetTop < other.y + other.height - other.offsetBottom &&
+            this.y + this.height - this.offsetBottom > other.y + other.offsetTop
         );
     }
 }

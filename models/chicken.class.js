@@ -6,6 +6,11 @@ class Chicken extends MovableObject {
         super();
 
         this.loadImage('img/enemies/pollo-bandido-idle-01.png');
+        // Kollisionsbereich des Banditen
+        this.offsetLeft = 20;
+        this.offsetRight = 20;
+        this.offsetTop = 25;
+        this.offsetBottom = 15;
 
         // Zufällige Startposition
         this.x = 200 + Math.random() * 350;
