@@ -23,7 +23,6 @@ class World {
 
         // Kollisionserkennung starten
         this.startCollisionDetection();
-
         this.draw();
     }
 
@@ -33,7 +32,9 @@ class World {
         this.drawObject(this.character);
 
         this.enemies.forEach((enemy) => {
-            this.drawObject(enemy);
+            if (!enemy.isDead) {
+                this.drawObject(enemy);
+            }
         });
 
         requestAnimationFrame(() => {
@@ -65,9 +66,12 @@ class World {
         setInterval(() => this.checkCollisions(), 1000 / 30);
     }
 
-    /** Prüft jeden Gegner einzeln auf Kollisionen. */
+    /** Prüft jeden lebenden Gegner auf Kollisionen. */
     checkCollisions() {
         this.enemies.forEach((enemy) => {
+            // Besiegte Gegner überspringen
+            if (enemy.isDead) return;
+
             const collision = this.character.isColliding(enemy);
 
             if (collision && !enemy.wasColliding) {
@@ -78,10 +82,16 @@ class World {
         });
     }
 
-    /** Meldet die Art des Kontakts. */
+    /** Reagiert auf einen Gegnerkontakt. */
     reportCollision(enemy) {
         if (this.character.isStomping(enemy)) {
-            console.log('SPRUNGTREFFER!');
+            // Bandit besiegt
+            enemy.isDead = true;
+
+            // Pico springt nach dem Treffer wieder hoch
+            this.character.speedY = 15;
+
+            console.log('Bandit besiegt!');
         } else {
             console.log('Anderer Gegnerkontakt!');
         }

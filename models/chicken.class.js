@@ -2,6 +2,7 @@ class Chicken extends MovableObject {
     startX = 0;
     movingRight = false;
     wasColliding = false;
+    isDead = false;
 
     constructor() {
         super();
