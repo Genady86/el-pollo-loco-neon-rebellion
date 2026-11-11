@@ -4,6 +4,7 @@ class World {
     enemies = [new Chicken(), new Chicken(), new Chicken()];
 
     clouds = [];
+    wasColliding = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -15,6 +16,14 @@ class World {
         this.enemies[0].x = 300;
         this.enemies[1].x = 425;
         this.enemies[2].x = 550;
+
+        // Patrouillen beginnen an den festgelegten Positionen
+        this.enemies.forEach((enemy) => {
+            enemy.startX = enemy.x;
+        });
+
+        // Kollisionserkennung starten
+        this.startCollisionDetection();
 
         this.draw();
     }
@@ -50,5 +59,23 @@ class World {
 
             this.ctx.restore();
         }
+    }
+
+    /** Startet die regelmäßige Kollisionsprüfung. */
+    startCollisionDetection() {
+        setInterval(() => this.checkCollisions(), 1000 / 30);
+    }
+
+    /** Prüft, ob Pico einen Gegner berührt. */
+    checkCollisions() {
+        let collision = this.enemies.some((enemy) => {
+            return this.character.isColliding(enemy);
+        });
+
+        if (collision && !this.wasColliding) {
+            console.log('Pico berührt einen Gegner!');
+        }
+
+        this.wasColliding = collision;
     }
 }
