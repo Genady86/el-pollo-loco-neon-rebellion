@@ -4,7 +4,6 @@ class World {
     enemies = [new Chicken(), new Chicken(), new Chicken()];
 
     clouds = [];
-    wasColliding = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -66,16 +65,25 @@ class World {
         setInterval(() => this.checkCollisions(), 1000 / 30);
     }
 
-    /** Prüft, ob Pico einen Gegner berührt. */
+    /** Prüft jeden Gegner einzeln auf Kollisionen. */
     checkCollisions() {
-        let collision = this.enemies.some((enemy) => {
-            return this.character.isColliding(enemy);
+        this.enemies.forEach((enemy) => {
+            const collision = this.character.isColliding(enemy);
+
+            if (collision && !enemy.wasColliding) {
+                this.reportCollision(enemy);
+            }
+
+            enemy.wasColliding = collision;
         });
+    }
 
-        if (collision && !this.wasColliding) {
-            console.log('Pico berührt einen Gegner!');
+    /** Meldet die Art des Kontakts. */
+    reportCollision(enemy) {
+        if (this.character.isStomping(enemy)) {
+            console.log('SPRUNGTREFFER!');
+        } else {
+            console.log('Anderer Gegnerkontakt!');
         }
-
-        this.wasColliding = collision;
     }
 }

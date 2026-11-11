@@ -10,6 +10,7 @@ class MovableObject {
     speedY = 0;
     acceleration = 2.5;
     groundY = 270;
+    previousY = this.y;
     offsetTop = 0;
     offsetBottom = 0;
     offsetLeft = 0;
@@ -40,6 +41,8 @@ class MovableObject {
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
+                // Position vor der Bewegung merken
+                this.previousY = this.y;
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
 

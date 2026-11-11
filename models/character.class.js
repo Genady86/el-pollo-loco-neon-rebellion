@@ -73,6 +73,20 @@ class Character extends MovableObject {
         this.jumpKeyWasDown = this.keyboard.SPACE;
     }
 
+    /** Prüft, ob Pico von oben auf einen Gegner fällt. */
+    isStomping(enemy) {
+        const enemyTop = enemy.y + enemy.offsetTop;
+        const previousBottom = this.previousY + this.height - this.offsetBottom;
+        const currentBottom = this.y + this.height - this.offsetBottom;
+
+        return (
+            this.speedY < 0 &&
+            previousBottom <= enemyTop &&
+            currentBottom > enemyTop &&
+            this.isColliding(enemy)
+        );
+    }
+
     /** Startet Bewegung und Bildanimation. */
     animate() {
         // Bewegung ungefähr 60-mal pro Sekunde prüfen
