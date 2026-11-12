@@ -5,13 +5,11 @@ class World {
 
     clouds = [];
 
+    backgroundObjects = [new BackgroundObject('img/backgrounds/fiesta-level1-demo.png')];
+
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-
-        // Hintergrundbild für Level 1 laden
-        this.background = new Image();
-        this.background.src = 'img/backgrounds/fiesta-level1-demo.png';
 
         this.character = new Character(keyboard);
 
@@ -34,17 +32,14 @@ class World {
     draw() {
         // Alte Bilder entfernen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawBackground();
+
+        this.addObjectsToMap(this.backgroundObjects);
 
         // Pico zeichnen
         this.drawObject(this.character);
 
         // Lebende und sterbende Gegner zeichnen
-        this.enemies.forEach((enemy) => {
-            if (!enemy.isRemoved) {
-                this.drawObject(enemy);
-            }
-        });
+        this.addObjectsToMap(this.enemies);
 
         // Nächstes Bild zeichnen
         requestAnimationFrame(() => this.draw());
@@ -104,12 +99,12 @@ class World {
             console.log('Anderer Gegnerkontakt!');
         }
     }
-    /** Zeichnet den Hintergrund von Level 1. */
-    drawBackground() {
-        if (!this.background.complete || !this.background.naturalWidth) {
-            return;
-        }
-
-        this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+    /** Zeichnet alle Objekte aus einem Array. */
+    addObjectsToMap(objects) {
+        objects.forEach((object) => {
+            if (!object.isRemoved) {
+                this.drawObject(object);
+            }
+        });
     }
 }
