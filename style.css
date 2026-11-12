@@ -10,3 +10,11 @@ body {
     min-height: 100vh;
     margin: 0;
 }
+
+/* Spiel für Desktop-Präsentation vergrößern */
+canvas {
+    display: block;
+    width: min(96vw, 1200px);
+    height: auto;
+    margin: 20px auto;
+}
