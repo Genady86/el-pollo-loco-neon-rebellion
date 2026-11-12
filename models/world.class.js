@@ -9,6 +9,10 @@ class World {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
 
+        // Hintergrundbild für Level 1 laden
+        this.background = new Image();
+        this.background.src = 'img/backgrounds/fiesta-level1-demo.png';
+
         this.character = new Character(keyboard);
 
         // Gegner vorläufig an festen Testpositionen
@@ -30,6 +34,7 @@ class World {
     draw() {
         // Alte Bilder entfernen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawBackground();
 
         // Pico zeichnen
         this.drawObject(this.character);
@@ -98,5 +103,13 @@ class World {
         } else {
             console.log('Anderer Gegnerkontakt!');
         }
+    }
+    /** Zeichnet den Hintergrund von Level 1. */
+    drawBackground() {
+        if (!this.background.complete || !this.background.naturalWidth) {
+            return;
+        }
+
+        this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
     }
 }
