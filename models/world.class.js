@@ -3,7 +3,7 @@ class World {
 
     enemies = [new Chicken(), new Chicken(), new Chicken()];
 
-    clouds = [];
+    clouds = [new Cloud()];
 
     backgroundObjects = [new BackgroundObject('img/backgrounds/fiesta-level1-demo.png')];
 
@@ -34,6 +34,9 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.addObjectsToMap(this.backgroundObjects);
+
+        // Wolken zeichnen
+        this.addObjectsToMap(this.clouds);
 
         // Pico zeichnen
         this.drawObject(this.character);
