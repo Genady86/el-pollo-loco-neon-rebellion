@@ -45,7 +45,7 @@ class Character extends MovableObject {
         super();
 
         this.keyboard = keyboard;
-        this.y = 270;
+        this.y = 290;
         this.groundY = this.y;
 
         // Picos Kollisionsbereich

@@ -32,6 +32,7 @@ class World {
 
         // Patrouillen beginnen an den festgelegten Positionen
         this.enemies.forEach((enemy) => {
+            enemy.y = this.character.groundY;
             enemy.startX = enemy.x;
         });
 
