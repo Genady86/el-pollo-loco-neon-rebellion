@@ -7,16 +7,13 @@ class World {
     // Aktuelle Position unserer Kamera
     cameraX = 0;
 
-    enemies = [new Chicken(), new Chicken(), new Chicken()];
+    // Unser erstes Level verwenden
+    level = level1;
 
-    clouds = [new Cloud()];
-
-    // Drei Hintergrundabschnitte mit jeweils 720 Pixeln
-    backgroundObjects = [
-        new BackgroundObject('img/backgrounds/fiesta-level1-01.png', 0, 0),
-        new BackgroundObject('img/backgrounds/fiesta-level1-02.png', 720, 0),
-        new BackgroundObject('img/backgrounds/fiesta-level1-03.png', 1440, 0),
-    ];
+    // Objekte aus dem Level uebernehmen
+    enemies = this.level.enemies;
+    clouds = this.level.clouds;
+    backgroundObjects = this.level.backgroundObjects;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
