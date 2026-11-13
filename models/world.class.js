@@ -1,16 +1,29 @@
 class World {
     character;
 
+    // Breite unserer gesamten Spielwelt
+    levelWidth = 2160;
+
+    // Aktuelle Position unserer Kamera
+    cameraX = 0;
+
     enemies = [new Chicken(), new Chicken(), new Chicken()];
 
     clouds = [new Cloud()];
 
-    backgroundObjects = [new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 0, 0)];
+    // Drei Hintergrundabschnitte mit jeweils 720 Pixeln
+    backgroundObjects = [
+        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 0, 0),
+        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 720, 0),
+        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 1440, 0),
+    ];
+
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
 
         this.character = new Character(keyboard);
+        this.character.levelWidth = this.levelWidth;
 
         // Gegner vorläufig an festen Testpositionen
         this.enemies[0].x = 300;
@@ -27,21 +40,32 @@ class World {
         this.draw();
     }
 
-    /** Zeichnet die komplette Spielwelt. */
+    /** Zeichnet die komplette Spielwelt mit Kamera. */
     draw() {
-        // Alte Bilder entfernen
+        // Kamera folgt Pico, bleibt aber innerhalb des Levels
+        this.cameraX = Math.max(
+            0,
+            Math.min(
+                this.character.x + this.character.width / 2 - this.canvas.width / 2,
+                this.levelWidth - this.canvas.width,
+            ),
+        );
+
+        // Vorherigen Bildschirm löschen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Kamera aktivieren
+        this.ctx.save();
+        this.ctx.translate(-this.cameraX, 0);
+
+        // Spielobjekte zeichnen
         this.addObjectsToMap(this.backgroundObjects);
-
-        // Wolken zeichnen
         this.addObjectsToMap(this.clouds);
-
-        // Pico zeichnen
         this.drawObject(this.character);
-
-        // Lebende und sterbende Gegner zeichnen
         this.addObjectsToMap(this.enemies);
+
+        // Kamera zurücksetzen
+        this.ctx.restore();
 
         // Nächstes Bild zeichnen
         requestAnimationFrame(() => this.draw());

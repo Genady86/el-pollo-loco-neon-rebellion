@@ -35,7 +35,7 @@ class Character extends MovableObject {
     isMoving = false;
     otherDirection = false;
     jumpKeyWasDown = false;
-    idleFrameCounter = 0;
+    idleTime = 0;
 
     /**
      * Erstellt unsere Spielfigur Pico.
@@ -102,6 +102,10 @@ class Character extends MovableObject {
         this.checkJump();
         this.isMoving = false;
 
+        if (this.isAboveGround()) {
+            this.idleTime = 0;
+        }
+
         if (this.keyboard.RIGHT && !this.keyboard.LEFT) {
             this.moveCharacterRight();
         }
@@ -109,15 +113,25 @@ class Character extends MovableObject {
         if (this.keyboard.LEFT && !this.keyboard.RIGHT) {
             this.moveCharacterLeft();
         }
+
+        if (this.isMoving) {
+            this.idleTime = 0;
+        }
     }
 
     /** Bewegt Pico nach rechts. */
     moveCharacterRight() {
-        if (this.x >= 720 - this.width) return;
+        // Rechten Rand der gesamten Spielwelt berechnen
+        const rightBoundary = this.levelWidth - this.width;
+
+        // Am Levelende stoppen
+        if (this.x >= rightBoundary) return;
 
         this.moveRight();
         this.otherDirection = false;
-        this.x = Math.min(this.x, 720 - this.width);
+
+        // Pico darf nicht über das Levelende hinauslaufen
+        this.x = Math.min(this.x, rightBoundary);
         this.isMoving = true;
     }
 
@@ -140,11 +154,11 @@ class Character extends MovableObject {
         } else if (this.isMoving) {
             this.playAnimation(this.IMAGES_WALKING);
         } else {
-            this.idleFrameCounter++;
+            // Zeit im Stand mitzählen
+            this.idleTime++;
 
-            if (this.idleFrameCounter % 3 === 0) {
-                this.playAnimation(this.IMAGES_IDLE);
-            }
+            // Pico steht ruhig, ohne zu pulsieren
+            this.img = this.imageCache[this.IMAGES_IDLE[0]];
         }
     }
 }
