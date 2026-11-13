@@ -13,9 +13,9 @@ class World {
 
     // Drei Hintergrundabschnitte mit jeweils 720 Pixeln
     backgroundObjects = [
-        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 0, 0),
-        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 720, 0),
-        new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 1440, 0),
+        new BackgroundObject('img/backgrounds/fiesta-level1-01.png', 0, 0),
+        new BackgroundObject('img/backgrounds/fiesta-level1-02.png', 720, 0),
+        new BackgroundObject('img/backgrounds/fiesta-level1-03.png', 1440, 0),
     ];
 
     constructor(canvas, keyboard) {
