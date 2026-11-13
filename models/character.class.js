@@ -35,6 +35,7 @@ class Character extends MovableObject {
     isMoving = false;
     otherDirection = false;
     jumpKeyWasDown = false;
+    idleFrameCounter = 0;
 
     /**
      * Erstellt unsere Spielfigur Pico.
@@ -139,7 +140,11 @@ class Character extends MovableObject {
         } else if (this.isMoving) {
             this.playAnimation(this.IMAGES_WALKING);
         } else {
-            this.playAnimation(this.IMAGES_IDLE);
+            this.idleFrameCounter++;
+
+            if (this.idleFrameCounter % 3 === 0) {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
         }
     }
 }
