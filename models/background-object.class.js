@@ -1,14 +1,16 @@
 class BackgroundObject extends MovableObject {
     /**
      * Erstellt ein Hintergrundobjekt.
-     * @param {string} imagePath - Pfad zum Bild
+     * @param {string} imagePath - Bildpfad
+     * @param {number} x - X-Position
+     * @param {number} y - Y-Position
      */
-    constructor(imagePath) {
+    constructor(imagePath, x, y) {
         super();
 
         this.loadImage(imagePath);
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.width = 720;
         this.height = 480;
     }

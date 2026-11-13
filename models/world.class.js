@@ -5,8 +5,7 @@ class World {
 
     clouds = [new Cloud()];
 
-    backgroundObjects = [new BackgroundObject('img/backgrounds/fiesta-level1-demo.png')];
-
+    backgroundObjects = [new BackgroundObject('img/backgrounds/fiesta-level1-demo.png', 0, 0)];
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
