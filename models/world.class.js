@@ -2,7 +2,7 @@ class World {
     character;
 
     // Breite unserer gesamten Spielwelt
-    levelWidth = 2160;
+    levelWidth;
 
     // Aktuelle Position unserer Kamera
     cameraX = 0;
@@ -18,8 +18,12 @@ class World {
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-
         this.character = new Character(keyboard);
+
+        // Die Levelbreite aus dem aktuellen Level übernehmen
+        this.levelWidth = this.level.level_end_x;
+
+        // Auch Pico bekommt diese Grenze
         this.character.levelWidth = this.levelWidth;
 
         // Gegner vorläufig an festen Testpositionen
