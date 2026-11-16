@@ -1,20 +1,135 @@
-canvas {
-    border: 1px solid black;
+/* ========================================
+   EL POLLO LOCO - NEON REBELLION
+   Layout und Design
+======================================== */
+
+/* Grundlayout */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+    margin: 0;
+
+    background: radial-gradient(ellipse at top, #241936 0%, #0c1020 75%);
+
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+/* ========================================
+   NEON-UEBERSCHRIFT
+======================================== */
+
+.game-header {
+    box-sizing: border-box;
+    width: min(96vw, 720px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin: 20px auto 12px;
+}
+
+/* Kleine obere Schrift */
+.game-kicker {
+    margin: 0 0 8px;
+
+    color: #e6a2dc;
+    font-size: 12px;
+    letter-spacing: 4px;
+}
+
+/* Haupttitel */
+.neon-title {
+    margin: 0;
+
+    font-size: clamp(24px, 4vw, 48px);
+    color: #ffce65;
+
+    text-shadow: 0 0 14px #d97a40;
+}
+
+/* Cyanfarbener Titelteil */
+.neon-title span {
+    color: #41dfff;
+    text-shadow: 0 0 14px #169ec9;
+}
+
+/* ========================================
+   LEVELANZEIGE
+======================================== */
+
+.level-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #8257c6;
+    border-radius: 12px;
+
+    background: #1c1734;
+    white-space: nowrap;
+}
+
+.level-badge small {
+    color: #c6b4e6;
+    letter-spacing: 2px;
+}
+
+.level-badge strong {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   SPIELBOX
+======================================== */
+
+#canvas {
+    box-sizing: border-box;
+    display: block;
+
+    width: min(96vw, 720px);
+    height: auto;
+
+    margin: 0 auto 20px;
+
+    border: 1px solid #454167;
+    border-radius: 8px;
+
     background-color: #101827;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
+/* ========================================
+   KLEINERE BILDSCHIRME
+======================================== */
 
-/* Spiel für Desktop-Präsentation vergrößern */
-canvas {
-    display: block;
-    width: min(96vw, 1200px);
-    height: auto;
-    margin: 20px auto;
+@media (max-width: 600px) {
+    .game-header {
+        gap: 10px;
+    }
+
+    .game-kicker {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .neon-title {
+        font-size: clamp(20px, 5vw, 30px);
+    }
+
+    .level-badge {
+        padding: 8px 10px;
+    }
+
+    .level-badge strong {
+        font-size: 12px;
+    }
 }
