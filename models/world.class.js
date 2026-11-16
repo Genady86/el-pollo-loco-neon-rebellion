@@ -15,6 +15,12 @@ class World {
     clouds = this.level.clouds;
     backgroundObjects = this.level.backgroundObjects;
 
+    // Muenzen aus dem aktuellen Level
+    coins = this.level.coins;
+
+    // Bereits gesammelte Muenzen
+    collectedCoins = 0;
+
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
@@ -36,6 +42,9 @@ class World {
             enemy.y = this.character.groundY;
             enemy.startX = enemy.x;
         });
+
+        // Muenzanzeige initialisieren
+        this.updateCoinCounter();
 
         // Kollisionserkennung starten
         this.startCollisionDetection();
@@ -68,7 +77,12 @@ class World {
 
         // Spielobjekte zeichnen
         this.addObjectsToMap(this.backgroundObjects);
+
         this.addObjectsToMap(this.clouds);
+
+        // Sammelbare Muenzen zeichnen
+        this.addObjectsToMap(this.coins);
+
         this.drawObject(this.character);
         this.addObjectsToMap(this.enemies);
 
@@ -98,6 +112,40 @@ class World {
         }
     }
 
+    /** Prueft, ob Pico eine Muenze beruehrt. */
+    checkCoinCollisions() {
+        this.coins.forEach((coin) => {
+            // Bereits eingesammelte Muenzen ignorieren
+            if (coin.isRemoved) return;
+
+            if (this.character.isColliding(coin)) {
+                // Muenze aus der Spielwelt entfernen
+                coin.isRemoved = true;
+
+                // Zaehler erhoehen
+                this.collectedCoins++;
+
+                // Anzeige aktualisieren
+                this.updateCoinCounter();
+
+                console.log('Muenze gesammelt:', this.collectedCoins);
+
+                if (this.collectedCoins === this.coins.length) {
+                    console.log('Alle Muenzen eingesammelt!');
+                }
+            }
+        });
+    }
+
+    /** Aktualisiert die Muenzanzeige ueber dem Spiel. */
+    updateCoinCounter() {
+        const counter = document.getElementById('coin-count');
+
+        if (counter) {
+            counter.textContent = `${this.collectedCoins} / ${this.coins.length}`;
+        }
+    }
+
     /** Startet die regelmäßige Kollisionsprüfung. */
     startCollisionDetection() {
         setInterval(() => this.checkCollisions(), 1000 / 30);
@@ -107,7 +155,8 @@ class World {
     checkCollisions() {
         // Keine Kollisionen während der Pause
         if (GameState.isPaused) return;
-
+        this.checkCoinCollisions();
+        // Auch die Muenzen auf Beruehrungen pruefen
         this.enemies.forEach((enemy) => {
             // Besiegte Gegner überspringen
             if (enemy.isDead) return;
