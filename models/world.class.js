@@ -44,6 +44,12 @@ class World {
 
     /** Zeichnet die komplette Spielwelt mit Kamera. */
     draw() {
+        // Waehrend der Pause das letzte Bild beibehalten
+        if (GameState.isPaused) {
+            requestAnimationFrame(() => this.draw());
+            return;
+        }
+
         // Kamera folgt Pico, bleibt aber innerhalb des Levels
         this.cameraX = Math.max(
             0,
@@ -99,6 +105,9 @@ class World {
 
     /** Prüft jeden lebenden Gegner auf Kollisionen. */
     checkCollisions() {
+        // Keine Kollisionen während der Pause
+        if (GameState.isPaused) return;
+
         this.enemies.forEach((enemy) => {
             // Besiegte Gegner überspringen
             if (enemy.isDead) return;

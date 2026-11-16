@@ -73,3 +73,35 @@ restartButton.addEventListener('click', () => {
 
 // Spielwelt starten
 let world = new World(canvas, keyboard);
+
+/* ========================================
+   SPIEL PAUSIEREN / FORTSETZEN
+======================================== */
+
+// Pause-Schaltflaeche aus HTML holen
+const pauseButton = document.getElementById('pause-btn');
+
+// Bei einem Klick zwischen Pause und Spielen wechseln
+pauseButton.addEventListener('click', () => {
+    const paused = GameState.togglePause();
+
+    // Gedrueckte Bewegungstasten zuruecksetzen
+    keyboard.LEFT = false;
+    keyboard.RIGHT = false;
+    keyboard.SPACE = false;
+
+    // Verhindert ungewollten Sprung nach Fortsetzen
+    world.character.jumpKeyWasDown = false;
+
+    // Beschriftung aktualisieren
+    if (paused) {
+        pauseButton.textContent = '▶ Fortsetzen';
+    } else {
+        pauseButton.textContent = '⏸ Pause';
+    }
+
+    // Zustand fuer Barrierefreiheit hinterlegen
+    pauseButton.setAttribute('aria-pressed', String(paused));
+
+    console.log('Spiel pausiert:', paused);
+});

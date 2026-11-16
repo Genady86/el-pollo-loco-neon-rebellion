@@ -34,9 +34,14 @@ class Chicken extends MovableObject {
         this.animate();
     }
 
-    /** Startet die Bewegung des Gegners. */
+    /** Startet die Bewegung des Banditen. */
     animate() {
-        setInterval(() => this.patrol(), 1000 / 60);
+        setInterval(() => {
+            // Bei Spielpause stehen bleiben
+            if (GameState.isPaused) return;
+
+            this.patrol();
+        }, 1000 / 60);
     }
 
     /** Lässt das Chicken hin und her laufen. */
@@ -59,24 +64,35 @@ class Chicken extends MovableObject {
         this.otherDirection = this.movingRight;
     }
 
-    /** Spielt die Todesanimation einmalig ab. */
+    /** Spielt die Todesanimation mit pausierbarer Zeit. */
     die() {
         if (this.isDead) return;
 
         this.isDead = true;
+
+        // Startzeit in unserer pausierbaren Spielzeit
+        const start = GameState.now();
+
+        // Erstes Todesbild anzeigen
         this.img = this.imageCache[this.IMAGES_DEATH[0]];
 
-        // Die drei folgenden Todesbilder anzeigen
-        this.IMAGES_DEATH.slice(1).forEach((path, index) => {
-            setTimeout(
-                () => {
-                    this.img = this.imageCache[path];
-                },
-                (index + 1) * 150,
-            );
-        });
+        const timer = setInterval(() => {
+            // Todesanimation bei Pause anhalten
+            if (GameState.isPaused) return;
 
-        // Zwei Sekunden nach der letzten Pose verschwinden
-        setTimeout(() => (this.isRemoved = true), 2450);
+            // Vergangene Spielzeit ohne Pausen
+            const elapsed = GameState.now() - start;
+
+            // Alle 150 ms zum naechsten Bild wechseln
+            const frame = Math.min(Math.floor(elapsed / 150), this.IMAGES_DEATH.length - 1);
+
+            this.img = this.imageCache[this.IMAGES_DEATH[frame]];
+
+            // Gegner nach 2450 ms entfernen
+            if (elapsed >= 2450) {
+                this.isRemoved = true;
+                clearInterval(timer);
+            }
+        }, 50);
     }
 }

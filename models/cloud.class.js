@@ -14,9 +14,11 @@ class Cloud extends MovableObject {
     /** Bewegt die Wolke langsam nach links. */
     animate() {
         setInterval(() => {
+            // Wolken bei Spielpause anhalten
+            if (GameState.isPaused) return;
+
             this.x -= 0.15;
 
-            // Rechts wieder erscheinen, wenn sie links verschwindet
             if (this.x + this.width < 0) {
                 this.x = 720;
             }

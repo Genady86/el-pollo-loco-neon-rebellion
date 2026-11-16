@@ -48,7 +48,7 @@ class Character extends MovableObject {
     jumpKeyWasDown = false;
     isDancing = false;
     dancePlayed = false;
-    idleSince = Date.now();
+    idleSince = GameState.now();
     danceSince = 0;
     currentAnimation = '';
 
@@ -104,8 +104,17 @@ class Character extends MovableObject {
 
     /** Startet Bewegung und Animation. */
     animate() {
-        setInterval(() => this.updateMovement(), 1000 / 60);
-        setInterval(() => this.updateAnimation(), 120);
+        setInterval(() => {
+            if (GameState.isPaused) return;
+
+            this.updateMovement();
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (GameState.isPaused) return;
+
+            this.updateAnimation();
+        }, 120);
     }
 
     /** Prueft Tastatur, Bewegung und Unterbrechungen. */
@@ -116,8 +125,13 @@ class Character extends MovableObject {
         if (this.keyboard.LEFT && !this.keyboard.RIGHT) this.moveCharacterLeft();
 
         // Auch ein Tastendruck am Levelrand bricht den Tanz ab
-        if (this.isMoving || this.keyboard.LEFT || this.keyboard.RIGHT ||
-            this.keyboard.SPACE || this.isAboveGround()) {
+        if (
+            this.isMoving ||
+            this.keyboard.LEFT ||
+            this.keyboard.RIGHT ||
+            this.keyboard.SPACE ||
+            this.isAboveGround()
+        ) {
             this.resetIdleState();
         }
     }
@@ -165,7 +179,7 @@ class Character extends MovableObject {
 
     /** Beendet den Tanz sofort bei einer Eingabe. */
     resetIdleState() {
-        this.idleSince = Date.now();
+        this.idleSince = GameState.now();
         this.isDancing = false;
         this.dancePlayed = false;
         this.danceSince = 0;
@@ -174,10 +188,12 @@ class Character extends MovableObject {
 
     /** Spielt ruhiges Stehen und startet einmalig den Tanz. */
     updateIdleAnimation() {
-        const now = Date.now();
+        const now = GameState.now();
+
         if (!this.dancePlayed && now - this.idleSince >= this.DANCE_DELAY) {
             this.startDance(now);
         }
+
         if (this.isDancing) {
             this.playDanceFrame(now);
         } else {

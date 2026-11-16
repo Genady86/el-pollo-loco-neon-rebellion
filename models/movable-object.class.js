@@ -1,51 +1,80 @@
 class MovableObject {
+    // ========================================
+    // POSITION UND GROESSE
+    // ========================================
+
     x = 120;
     y = 250;
     img;
     height = 150;
     width = 100;
 
+    // ========================================
+    // ANIMATION UND BEWEGUNG
+    // ========================================
+
     imageCache = {};
     currentImage = 0;
+
     speedY = 0;
     acceleration = 2.5;
     groundY = 270;
     previousY = this.y;
+
+    // ========================================
+    // KOLLISIONSBEREICH
+    // ========================================
+
     offsetTop = 0;
     offsetBottom = 0;
     offsetLeft = 0;
     offsetRight = 0;
 
+    /** Laedt ein einzelnes Bild. */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
+    /** Laedt mehrere Animationsbilder. */
     loadImages(paths) {
         paths.forEach((path) => {
-            let image = new Image();
+            const image = new Image();
             image.src = path;
             this.imageCache[path] = image;
         });
     }
 
+    /** Zeigt das naechste Animationsbild. */
     playAnimation(images) {
-        let index = this.currentImage % images.length;
-        let path = images[index];
+        const index = this.currentImage % images.length;
+        const path = images[index];
 
         this.img = this.imageCache[path];
         this.currentImage++;
     }
 
-    /** Bewegt das Objekt durch Schwerkraft. */
+    // ========================================
+    // SCHWERKRAFT MIT PAUSE
+    // ========================================
+
+    /** Berechnet die vertikale Bewegung. */
     applyGravity() {
         setInterval(() => {
+            // Bei Spielpause sofort abbrechen
+            if (GameState.isPaused) return;
+
             if (this.isAboveGround() || this.speedY > 0) {
-                // Position vor der Bewegung merken
+                // Vorherige Position merken
                 this.previousY = this.y;
+
+                // Figur vertikal bewegen
                 this.y -= this.speedY;
+
+                // Schwerkraft anwenden
                 this.speedY -= this.acceleration;
 
+                // Bodenbegrenzung
                 if (this.y >= this.groundY) {
                     this.y = this.groundY;
                     this.speedY = 0;
@@ -54,15 +83,19 @@ class MovableObject {
         }, 1000 / 25);
     }
 
-    /** Prüft, ob das Objekt in der Luft ist. */
+    /** Prueft, ob das Objekt ueber dem Boden ist. */
     isAboveGround() {
         return this.y < this.groundY;
     }
 
-    /** Startet den Sprung nach oben. */
+    /** Laesst das Objekt springen. */
     jump() {
         this.speedY = 30;
     }
+
+    // ========================================
+    // HORIZONTALE BEWEGUNG
+    // ========================================
 
     moveRight() {
         this.x += 5;
@@ -72,7 +105,11 @@ class MovableObject {
         this.x -= 5;
     }
 
-    /** Prüft die Kollision mit angepassten Hitboxen. */
+    // ========================================
+    // KOLLISIONSERKENNUNG
+    // ========================================
+
+    /** Prueft die Kollision zweier Spielobjekte. */
     isColliding(other) {
         return (
             this.x + this.offsetLeft < other.x + other.width - other.offsetRight &&
