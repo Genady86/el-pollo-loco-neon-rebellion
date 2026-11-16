@@ -20,7 +20,54 @@
             </div>
         </header>
 
+        <!-- =====================================
+     PREMIUM HUD - LEBEN UND MUENZEN
+===================================== -->
+
+        <section class="game-hud">
+            <!-- Lebensanzeige -->
+            <div class="hud-lives">
+                <span class="hud-label">PICO · LEBEN</span>
+
+                <div class="hearts" aria-label="3 Leben">
+                    <span>♥</span>
+                    <span>♥</span>
+                    <span>♥</span>
+                </div>
+            </div>
+
+            <!-- Muenzanzeige -->
+            <div class="hud-coins">
+                <span class="hud-label">MÜNZEN</span>
+
+                <div class="coin-counter">
+                    <span>🪙</span>
+                    <strong id="coin-count">0 / 5</strong>
+                </div>
+            </div>
+        </section>
+
         <canvas id="canvas" width="720" height="480"></canvas>
+
+        <!-- Steuerung unterhalb der Spielbox -->
+        <nav class="game-controls" aria-label="Spielsteuerung">
+            <div class="control-hint">
+                <kbd>A</kbd>
+                <kbd>←</kbd>
+                <span>Links</span>
+            </div>
+
+            <div class="control-hint">
+                <kbd>D</kbd>
+                <kbd>→</kbd>
+                <span>Rechts</span>
+            </div>
+
+            <div class="control-hint">
+                <kbd>LEERTASTE</kbd>
+                <span>Springen</span>
+            </div>
+        </nav>
 
         <script src="models/movable-object.class.js"></script>
         <script src="models/cloud.class.js"></script>

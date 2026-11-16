@@ -1,9 +1,16 @@
 /* ========================================
    EL POLLO LOCO - NEON REBELLION
-   Layout und Design
+   PREMIUM LAYOUT 1.0
 ======================================== */
 
-/* Grundlayout */
+* {
+    box-sizing: border-box;
+}
+
+/* ========================================
+   GRUNDLAYOUT
+======================================== */
+
 body {
     display: flex;
     flex-direction: column;
@@ -12,6 +19,7 @@ body {
 
     min-height: 100vh;
     margin: 0;
+    padding: 24px 12px;
 
     background: radial-gradient(ellipse at top, #241936 0%, #0c1020 75%);
 
@@ -24,18 +32,16 @@ body {
 ======================================== */
 
 .game-header {
-    box-sizing: border-box;
-    width: min(96vw, 720px);
+    width: min(96vw, 960px);
 
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
 
-    margin: 20px auto 12px;
+    margin: 0 auto 16px;
 }
 
-/* Kleine obere Schrift */
 .game-kicker {
     margin: 0 0 8px;
 
@@ -44,17 +50,15 @@ body {
     letter-spacing: 4px;
 }
 
-/* Haupttitel */
 .neon-title {
     margin: 0;
 
-    font-size: clamp(24px, 4vw, 48px);
+    font-size: clamp(28px, 4vw, 48px);
     color: #ffce65;
 
     text-shadow: 0 0 14px #d97a40;
 }
 
-/* Cyanfarbener Titelteil */
 .neon-title span {
     color: #41dfff;
     text-shadow: 0 0 14px #169ec9;
@@ -89,26 +93,95 @@ body {
 }
 
 /* ========================================
+   PREMIUM HUD
+======================================== */
+
+.game-hud {
+    width: min(96vw, 960px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 14px 20px;
+    margin: 0 auto 12px;
+
+    background: rgba(25, 22, 49, 0.96);
+    border: 1px solid #8856c9;
+    border-radius: 12px;
+
+    box-shadow: 0 0 18px rgba(155, 69, 222, 0.25);
+}
+
+.hud-lives,
+.hud-coins {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hud-coins {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.hud-label {
+    display: block;
+
+    color: #cfc0e7;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Lebensanzeige */
+.hearts {
+    display: flex;
+    gap: 9px;
+
+    color: #ff547d;
+    font-size: 28px;
+    line-height: 1;
+
+    text-shadow: 0 0 10px #ed4671;
+}
+
+/* Muenzanzeige */
+.coin-counter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+
+    color: #ffd76e;
+    font-size: 22px;
+
+    text-shadow: 0 0 8px rgba(255, 214, 107, 0.3);
+}
+
+/* ========================================
    SPIELBOX
 ======================================== */
 
 #canvas {
-    box-sizing: border-box;
     display: block;
 
-    width: min(96vw, 720px);
+    width: min(96vw, 960px);
     height: auto;
 
-    margin: 0 auto 20px;
+    margin: 0 auto 8px;
 
-    border: 1px solid #454167;
-    border-radius: 8px;
+    border: 2px solid #8856c9;
+    border-radius: 10px;
 
     background-color: #101827;
+
+    box-shadow: 0 0 24px rgba(149, 61, 220, 0.3);
 }
 
 /* ========================================
-   KLEINERE BILDSCHIRME
+   RESPONSIVE DARSTELLUNG
 ======================================== */
 
 @media (max-width: 600px) {
@@ -131,5 +204,120 @@ body {
 
     .level-badge strong {
         font-size: 12px;
+    }
+
+    .game-hud {
+        padding: 10px 12px;
+    }
+
+    .hud-label {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .hearts {
+        font-size: 22px;
+        gap: 5px;
+    }
+
+    .coin-counter {
+        font-size: 18px;
+    }
+
+    /* ========================================
+   BEDIENLEISTE UNTER DER SPIELBOX
+======================================== */
+
+    .game-controls {
+        width: min(96vw, 960px);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+
+        margin: 0 auto;
+        padding: 14px 18px;
+
+        background: #1b1734;
+        border: 1px solid #74519c;
+        border-radius: 10px;
+    }
+
+    .control-hint {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #d6d0e8;
+        font-size: 13px;
+    }
+
+    .control-hint kbd {
+        padding: 6px 9px;
+        border: 1px solid #7956aa;
+        border-radius: 5px;
+        background: #30264e;
+        color: white;
+        font-family: inherit;
+        font-weight: bold;
+    }
+}
+
+/* ========================================
+   PREMIUM BEDIENLEISTE
+======================================== */
+
+.game-controls {
+    box-sizing: border-box;
+    width: min(96vw, 960px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    margin: 0 auto;
+    padding: 14px 20px;
+
+    background: rgba(25, 22, 49, 0.96);
+    border: 1px solid #8856c9;
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(155, 69, 222, 0.15);
+}
+
+.control-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #d6d0e8;
+    font-size: 13px;
+}
+
+.control-hint kbd {
+    display: inline-block;
+    padding: 6px 9px;
+
+    background: #30264e;
+    border: 1px solid #7956aa;
+    border-radius: 5px;
+
+    color: white;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .game-controls {
+        justify-content: center;
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .control-hint {
+        font-size: 11px;
     }
 }
