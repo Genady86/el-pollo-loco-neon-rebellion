@@ -224,43 +224,7 @@ body {
         font-size: 18px;
     }
 
-    /* ========================================
-   BEDIENLEISTE UNTER DER SPIELBOX
-======================================== */
 
-    .game-controls {
-        width: min(96vw, 960px);
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 16px;
-
-        margin: 0 auto;
-        padding: 14px 18px;
-
-        background: #1b1734;
-        border: 1px solid #74519c;
-        border-radius: 10px;
-    }
-
-    .control-hint {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        color: #d6d0e8;
-        font-size: 13px;
-    }
-
-    .control-hint kbd {
-        padding: 6px 9px;
-        border: 1px solid #7956aa;
-        border-radius: 5px;
-        background: #30264e;
-        color: white;
-        font-family: inherit;
-        font-weight: bold;
-    }
 }
 
 /* ========================================
