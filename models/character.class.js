@@ -1,5 +1,8 @@
 class Character extends MovableObject {
-    // Bereits vorhandene Lauf-, Sprung- und Fallanimationen
+    // ========================================
+    // ANIMATIONSBILDER
+    // ========================================
+
     IMAGES_WALKING = [
         'img/player/player-run-01.png',
         'img/player/player-run-02.png',
@@ -9,7 +12,6 @@ class Character extends MovableObject {
         'img/player/player-run-06.png',
     ];
 
-    // Sieben neue Standbilder aus der Premium-Grafikdemo
     IMAGES_IDLE = [
         'img/player/idle-premium/pico-idle-premium-01.png',
         'img/player/idle-premium/pico-idle-premium-02.png',
@@ -20,7 +22,6 @@ class Character extends MovableObject {
         'img/player/idle-premium/pico-idle-premium-07.png',
     ];
 
-    // Sechs Bilder fuer den einmaligen Sombrero-Tanz
     IMAGES_DANCE = [
         'img/player/dance/pico-idle-funny-01.png',
         'img/player/dance/pico-idle-funny-02.png',
@@ -42,63 +43,94 @@ class Character extends MovableObject {
         'img/player/fall/pico-fall-03.png',
     ];
 
-    // Bewegungs- und Animationszustand
+    // ========================================
+    // BEWEGUNGSZUSTAND
+    // ========================================
+
     isMoving = false;
     otherDirection = false;
     jumpKeyWasDown = false;
+
+    // ========================================
+    // TANZ UND IDLE
+    // ========================================
+
     isDancing = false;
     dancePlayed = false;
     idleSince = GameState.now();
     danceSince = 0;
     currentAnimation = '';
 
-    // Zeitangaben in Millisekunden
     DANCE_DELAY = 10000;
     IDLE_FRAME_MS = 210;
     DANCE_FRAME_MS = 550;
 
-    /** Erstellt Pico. @param {Keyboard} keyboard Tastatursteuerung */
+    // ========================================
+    // HINDERNISSE
+    // ========================================
+
+    obstacles = [];
+
+    // ========================================
+    // KONSTRUKTOR
+    // ========================================
+
     constructor(keyboard) {
         super();
+
         this.keyboard = keyboard;
+
         this.y = 290;
         this.groundY = this.y;
 
-        // Unveraenderte Hitbox
+        // Bestehende Hitbox beibehalten
         this.offsetLeft = 25;
         this.offsetRight = 25;
         this.offsetTop = 20;
         this.offsetBottom = 15;
 
+        // Animationsbilder vorladen
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_DANCE);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_FALLING);
+
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
 
+        // Spielmechanik starten
         this.applyGravity();
         this.animate();
     }
 
-    /** Springen nur bei neuem Tastendruck erlauben. */
+    // ========================================
+    // SPRINGEN
+    // ========================================
+
+    /** Springt nur bei einem neuen Tastendruck. */
     checkJump() {
         if (this.keyboard.SPACE && !this.jumpKeyWasDown && !this.isAboveGround()) {
-            // Pico springt
             this.jump();
 
-            // Passenden Sound abspielen
+            // Sprungsound
             audioManager.playSound('jump');
         }
 
         this.jumpKeyWasDown = this.keyboard.SPACE;
     }
 
-    /** Prueft einen Treffer von oben auf einen Gegner. */
+    // ========================================
+    // GEGNERKOLLISION
+    // ========================================
+
+    /** Erkennt das Besiegen eines Gegners von oben. */
     isStomping(enemy) {
         const enemyTop = enemy.y + enemy.offsetTop;
+
         const previousBottom = this.previousY + this.height - this.offsetBottom;
+
         const currentBottom = this.y + this.height - this.offsetBottom;
+
         return (
             this.speedY < 0 &&
             previousBottom <= enemyTop &&
@@ -107,7 +139,10 @@ class Character extends MovableObject {
         );
     }
 
-    /** Startet Bewegung und Animation. */
+    // ========================================
+    // ANIMATION STARTEN
+    // ========================================
+
     animate() {
         setInterval(() => {
             if (GameState.isPaused) return;
@@ -122,14 +157,23 @@ class Character extends MovableObject {
         }, 120);
     }
 
-    /** Prueft Tastatur, Bewegung und Unterbrechungen. */
+    // ========================================
+    // TASTATUREINGABEN
+    // ========================================
+
     updateMovement() {
         this.checkJump();
-        this.isMoving = false;
-        if (this.keyboard.RIGHT && !this.keyboard.LEFT) this.moveCharacterRight();
-        if (this.keyboard.LEFT && !this.keyboard.RIGHT) this.moveCharacterLeft();
 
-        // Auch ein Tastendruck am Levelrand bricht den Tanz ab
+        this.isMoving = false;
+
+        if (this.keyboard.RIGHT && !this.keyboard.LEFT) {
+            this.moveCharacterRight();
+        }
+
+        if (this.keyboard.LEFT && !this.keyboard.RIGHT) {
+            this.moveCharacterLeft();
+        }
+
         if (
             this.isMoving ||
             this.keyboard.LEFT ||
@@ -141,26 +185,106 @@ class Character extends MovableObject {
         }
     }
 
-    /** Bewegt Pico nach rechts, ohne das Level zu verlassen. */
+    // ========================================
+    // HINDERNISKOLLISION
+    // ========================================
+
+    /** Prueft, ob Pico an eine geplante Position darf. */
+    canMoveTo(nextX) {
+        const oldX = this.x;
+
+        // Geplante Position voruebergehend einsetzen
+        this.x = nextX;
+
+        const blocked = this.obstacles.some((obstacle) => {
+            // Keine Beruehrung: Bewegung ist erlaubt
+            if (!this.isColliding(obstacle)) {
+                return false;
+            }
+
+            // Tatsächliche horizontale Trefferflaechen
+            const obstacleLeft = obstacle.x + obstacle.offsetLeft;
+
+            const obstacleRight = obstacle.x + obstacle.width - obstacle.offsetRight;
+
+            const oldLeft = oldX + this.offsetLeft;
+            const oldRight = oldX + this.width - this.offsetRight;
+
+            const newLeft = nextX + this.offsetLeft;
+            const newRight = nextX + this.width - this.offsetRight;
+
+            // Ueberlappung vor der Bewegung
+            const oldOverlap = Math.max(
+                0,
+                Math.min(oldRight, obstacleRight) - Math.max(oldLeft, obstacleLeft),
+            );
+
+            // Ueberlappung nach der Bewegung
+            const newOverlap = Math.max(
+                0,
+                Math.min(newRight, obstacleRight) - Math.max(newLeft, obstacleLeft),
+            );
+
+            // Pico darf nicht tiefer in ein Hindernis laufen.
+            // Eine Bewegung aus einem Hindernis heraus
+            // bleibt dagegen moeglich.
+            return newOverlap > oldOverlap;
+        });
+
+        // Urspruengliche Position wiederherstellen
+        this.x = oldX;
+
+        return !blocked;
+    }
+
+    // ========================================
+    // NACH RECHTS LAUFEN
+    // ========================================
+
     moveCharacterRight() {
         const rightBoundary = this.levelWidth - this.width;
+
         if (this.x >= rightBoundary) return;
-        this.moveRight();
+
+        const nextX = Math.min(this.x + 5, rightBoundary);
+
         this.otherDirection = false;
-        this.x = Math.min(this.x, rightBoundary);
+
+        // Kaktus oder anderes Hindernis im Weg?
+        if (!this.canMoveTo(nextX)) {
+            return;
+        }
+
+        this.moveRight();
+        this.x = nextX;
         this.isMoving = true;
     }
 
-    /** Bewegt Pico nach links, ohne das Level zu verlassen. */
+    // ========================================
+    // NACH LINKS LAUFEN
+    // ========================================
+
     moveCharacterLeft() {
         if (this.x <= 0) return;
-        this.moveLeft();
+
+        const nextX = Math.max(this.x - 5, 0);
+
         this.otherDirection = true;
-        this.x = Math.max(this.x, 0);
+
+        // Kaktus oder anderes Hindernis im Weg?
+        if (!this.canMoveTo(nextX)) {
+            return;
+        }
+
+        this.moveLeft();
+        this.x = nextX;
         this.isMoving = true;
     }
 
-    /** Waehlt Springen, Fallen, Laufen oder Stehen. */
+    // ========================================
+    // ANIMATION AUSWAEHLEN
+    // ========================================
+
     updateAnimation() {
         if (this.isAboveGround() && this.speedY > 0) {
             this.showMovingAnimation('jump', this.IMAGES_JUMPING);
@@ -173,16 +297,23 @@ class Character extends MovableObject {
         }
     }
 
-    /** Verhindert zufaellige Frame-Spruenge beim Zustandswechsel. */
+    // ========================================
+    // BEWEGUNGSANIMATION
+    // ========================================
+
     showMovingAnimation(state, images) {
         if (this.currentAnimation !== state) {
             this.currentAnimation = state;
             this.currentImage = 0;
         }
+
         this.playAnimation(images);
     }
 
-    /** Beendet den Tanz sofort bei einer Eingabe. */
+    // ========================================
+    // IDLE ZURUECKSETZEN
+    // ========================================
+
     resetIdleState() {
         this.idleSince = GameState.now();
         this.isDancing = false;
@@ -191,7 +322,10 @@ class Character extends MovableObject {
         this.currentAnimation = '';
     }
 
-    /** Spielt ruhiges Stehen und startet einmalig den Tanz. */
+    // ========================================
+    // IDLE UND TANZ
+    // ========================================
+
     updateIdleAnimation() {
         const now = GameState.now();
 
@@ -206,15 +340,24 @@ class Character extends MovableObject {
         }
     }
 
-    /** Zeigt die sieben Standbilder mit gleichmaessigem Tempo. */
+    // ========================================
+    // IDLE-ANIMATION
+    // ========================================
+
     playIdleFrame(now) {
         this.currentAnimation = 'idle';
+
         const index = Math.floor((now - this.idleSince) / this.IDLE_FRAME_MS);
+
         const path = this.IMAGES_IDLE[index % this.IMAGES_IDLE.length];
+
         this.img = this.imageCache[path];
     }
 
-    /** Merkt sich den genauen Startzeitpunkt des Tanzes. */
+    // ========================================
+    // TANZ STARTEN
+    // ========================================
+
     startDance(now) {
         this.isDancing = true;
         this.dancePlayed = true;
@@ -222,15 +365,20 @@ class Character extends MovableObject {
         this.currentAnimation = 'dance';
     }
 
-    /** Spielt sechs Tanzframes einmal ab, ohne ein Bild zu ueberspringen. */
+    // ========================================
+    // TANZ ABSPIELEN
+    // ========================================
+
     playDanceFrame(now) {
         const index = Math.floor((now - this.danceSince) / this.DANCE_FRAME_MS);
+
         if (index >= this.IMAGES_DANCE.length) {
             this.isDancing = false;
             this.idleSince = now;
             this.playIdleFrame(now);
             return;
         }
+
         this.img = this.imageCache[this.IMAGES_DANCE[index]];
     }
 }

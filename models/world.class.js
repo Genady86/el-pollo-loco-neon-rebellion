@@ -17,6 +17,7 @@ class World {
 
     // Muenzen aus dem aktuellen Level
     coins = this.level.coins;
+    obstacles = this.level.obstacles;
 
     // Bereits gesammelte Muenzen
     collectedCoins = 0;
@@ -25,6 +26,9 @@ class World {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.character = new Character(keyboard);
+
+        // Pico kennt die Hindernisse des Levels
+        this.character.obstacles = this.obstacles;
 
         // Die Levelbreite aus dem aktuellen Level übernehmen
         this.levelWidth = this.level.level_end_x;
@@ -82,6 +86,9 @@ class World {
 
         // Sammelbare Muenzen zeichnen
         this.addObjectsToMap(this.coins);
+
+        // Hindernisse im Level zeichnen
+        this.addObjectsToMap(this.obstacles);
 
         this.drawObject(this.character);
         this.addObjectsToMap(this.enemies);
