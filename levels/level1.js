@@ -34,4 +34,7 @@ const level1 = new Level(
         new Obstacle(1260, 350, 65, 90),
         new Obstacle(1700, 365, 50, 75),
     ],
+
+    // Neon-Schmiede als Zwischenziel
+    new Forge(1110, 285),
 );

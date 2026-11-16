@@ -18,6 +18,7 @@ class World {
     // Muenzen aus dem aktuellen Level
     coins = this.level.coins;
     obstacles = this.level.obstacles;
+    forge = this.level.forge ?? null;
 
     // Bereits gesammelte Muenzen
     collectedCoins = 0;
@@ -83,6 +84,10 @@ class World {
         this.addObjectsToMap(this.backgroundObjects);
 
         this.addObjectsToMap(this.clouds);
+
+        if (this.forge) {
+            this.drawObject(this.forge);
+        }
 
         // Sammelbare Muenzen zeichnen
         this.addObjectsToMap(this.coins);

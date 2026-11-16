@@ -106,3 +106,34 @@ pauseButton.addEventListener('click', () => {
 
     console.log('Spiel pausiert:', paused);
 });
+
+/* ========================================
+   NEON-SCHMIEDE - INTERAKTION
+======================================== */
+
+window.addEventListener('keydown', (event) => {
+    // Nur einmal beim Druecken von E ausfuehren
+    if (event.code !== 'KeyE' || event.repeat) return;
+
+    // Waehrend der Pause keine Interaktion
+    if (GameState.isPaused) return;
+
+    // Pruefen, ob eine Schmiede existiert
+    if (!world.forge) return;
+
+    // Mittelpunkt von Pico und Schmiede
+    const picoX = world.character.x + world.character.width / 2;
+    const forgeX = world.forge.x + world.forge.width / 2;
+
+    // Entfernung berechnen
+    const distance = Math.abs(picoX - forgeX);
+
+    if (distance <= 150) {
+        console.log('Neon-Schmiede erreicht!');
+
+        document.getElementById('forge-status').textContent =
+            '⚒️ Schmiede betreten! Zwei Revolver verfügbar.';
+    } else {
+        console.log('Pico ist zu weit von der Schmiede entfernt.');
+    }
+});

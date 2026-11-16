@@ -56,7 +56,7 @@
                 </div>
             </div>
         </section>
-
+        <p id="forge-status" role="status" aria-live="polite">⚒️ Neon-Schmiede: Sammle 3 Münzen!</p>
         <canvas id="canvas" width="720" height="480"></canvas>
 
         <!-- Steuerung unterhalb der Spielbox -->
@@ -77,6 +77,11 @@
                 <kbd>LEERTASTE</kbd>
                 <span>Springen</span>
             </div>
+
+            <div class="control-hint">
+                <kbd>E</kbd>
+                <span>Neon-Schmiede</span>
+            </div>
         </nav>
 
         <script src="models/movable-object.class.js"></script>
@@ -86,6 +91,7 @@
         <script src="models/chicken.class.js"></script>
         <script src="models/coin.class.js"></script>
         <script src="models/obstacle.class.js"></script>
+        <script src="models/forge.class.js"></script>
         <script src="models/level.class.js"></script>
         <script src="levels/level1.js"></script>
         <script src="models/world.class.js"></script>
