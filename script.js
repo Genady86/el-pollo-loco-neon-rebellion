@@ -1,7 +1,17 @@
 let canvas = document.getElementById('canvas');
 let keyboard = new Keyboard();
 
-// Taste wird gedrückt
+// ========================================
+// AUDIO-MANAGER
+// ========================================
+
+const audioManager = new AudioManager();
+
+// ========================================
+// TASTATURSTEUERUNG
+// ========================================
+
+// Taste wird gedrueckt
 window.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowRight' || event.code === 'KeyD') {
         keyboard.RIGHT = true;
@@ -33,75 +43,66 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
-/* ========================================
-   SOUND AN / AUS
-======================================== */
+// ========================================
+// SOUND AN / AUS
+// ========================================
 
-// Sound ist standardmaessig eingeschaltet
-let soundEnabled = true;
-
-// Sound-Schaltflaeche aus HTML holen
 const soundButton = document.getElementById('sound-btn');
 
-// Auf einen Mausklick reagieren
 soundButton.addEventListener('click', () => {
-    // Zwischen an und aus wechseln
-    soundEnabled = !soundEnabled;
+    // Aktuellen Zustand umkehren
+    const enabled = !audioManager.enabled;
 
-    // Beschriftung aktualisieren
-    if (soundEnabled) {
-        soundButton.textContent = '🔊 Ton an';
-    } else {
-        soundButton.textContent = '🔇 Ton aus';
-    }
+    // Echte Musiksteuerung aufrufen
+    audioManager.setEnabled(enabled);
 
-    console.log('Sound aktiviert:', soundEnabled);
+    // Beschriftung anpassen
+    soundButton.textContent = enabled ? '🔊 Ton an' : '🔇 Ton aus';
+
+    soundButton.setAttribute('aria-pressed', String(enabled));
+
+    console.log('Sound aktiviert:', enabled);
 });
 
-/* ========================================
-   SPIEL NEU STARTEN
-======================================== */
+// ========================================
+// SPIEL NEU STARTEN
+// ========================================
 
-// Neustart-Schaltflaeche aus HTML holen
 const restartButton = document.getElementById('restart-btn');
 
-// Auf einen Klick reagieren
 restartButton.addEventListener('click', () => {
-    // Aktuelle Webseite neu laden
     window.location.reload();
 });
 
-// Spielwelt starten
+// ========================================
+// SPIELWELT STARTEN
+// ========================================
+
 let world = new World(canvas, keyboard);
 
-/* ========================================
-   SPIEL PAUSIEREN / FORTSETZEN
-======================================== */
+// ========================================
+// SPIEL PAUSIEREN / FORTSETZEN
+// ========================================
 
-// Pause-Schaltflaeche aus HTML holen
 const pauseButton = document.getElementById('pause-btn');
 
-// Bei einem Klick zwischen Pause und Spielen wechseln
 pauseButton.addEventListener('click', () => {
     const paused = GameState.togglePause();
 
-    // Gedrueckte Bewegungstasten zuruecksetzen
+    // Gedrueckte Tasten zuruecksetzen
     keyboard.LEFT = false;
     keyboard.RIGHT = false;
     keyboard.SPACE = false;
 
-    // Verhindert ungewollten Sprung nach Fortsetzen
     world.character.jumpKeyWasDown = false;
 
-    // Beschriftung aktualisieren
-    if (paused) {
-        pauseButton.textContent = '▶ Fortsetzen';
-    } else {
-        pauseButton.textContent = '⏸ Pause';
-    }
+    // Pause-Button aktualisieren
+    pauseButton.textContent = paused ? '▶ Fortsetzen' : '⏸ Pause';
 
-    // Zustand fuer Barrierefreiheit hinterlegen
     pauseButton.setAttribute('aria-pressed', String(paused));
+
+    // Jetzt wird auch die Musik pausiert!
+    audioManager.updatePlayback();
 
     console.log('Spiel pausiert:', paused);
 });

@@ -125,6 +125,9 @@ class World {
                 // Zaehler erhoehen
                 this.collectedCoins++;
 
+                // Sound beim Einsammeln
+                audioManager.playSound('coin');
+
                 // Anzeige aktualisieren
                 this.updateCoinCounter();
 
@@ -177,6 +180,9 @@ class World {
             // Bandit besiegt
             enemy.die();
 
+            // Passenden Sound abspielen
+            audioManager.playSound('bandit');
+
             // Pico springt nach dem Treffer wieder hoch
             this.character.speedY = 15;
 
@@ -185,6 +191,7 @@ class World {
             console.log('Anderer Gegnerkontakt!');
         }
     }
+
     /** Zeichnet alle Objekte aus einem Array. */
     addObjectsToMap(objects) {
         objects.forEach((object) => {

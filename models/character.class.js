@@ -84,8 +84,13 @@ class Character extends MovableObject {
     /** Springen nur bei neuem Tastendruck erlauben. */
     checkJump() {
         if (this.keyboard.SPACE && !this.jumpKeyWasDown && !this.isAboveGround()) {
+            // Pico springt
             this.jump();
+
+            // Passenden Sound abspielen
+            audioManager.playSound('jump');
         }
+
         this.jumpKeyWasDown = this.keyboard.SPACE;
     }
 
