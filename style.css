@@ -223,8 +223,6 @@ body {
     .coin-counter {
         font-size: 18px;
     }
-
-
 }
 
 /* ========================================
@@ -282,6 +280,131 @@ body {
     }
 
     .control-hint {
+        font-size: 11px;
+    }
+
+    /* ========================================
+   PREMIUM SPIELSTEUERUNG
+======================================== */
+
+    .game-actions {
+        width: min(96vw, 960px);
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 auto 12px;
+    }
+
+    .game-actions button {
+        padding: 10px 16px;
+        border: 1px solid #7956aa;
+        border-radius: 8px;
+
+        background: #30264e;
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: bold;
+
+        cursor: pointer;
+        transition:
+            background 0.2s,
+            transform 0.2s;
+    }
+
+    .game-actions button:hover {
+        background: #49366f;
+        transform: translateY(-2px);
+    }
+
+    .game-actions button:focus-visible {
+        outline: 2px solid #41dfff;
+        outline-offset: 3px;
+    }
+
+    #restart-btn {
+        border-color: #b87b43;
+        background: #573325;
+    }
+
+    #restart-btn:hover {
+        background: #75462d;
+    }
+
+    @media (max-width: 480px) {
+        .game-actions {
+            justify-content: center;
+        }
+
+        .game-actions button {
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+    }
+}
+
+/* ========================================
+   PREMIUM BUTTONS - NEON REBELLION
+======================================== */
+
+.game-actions {
+    width: min(96vw, 960px);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 12px;
+}
+
+.game-actions button {
+    appearance: none;
+    padding: 10px 16px;
+
+    border: 1px solid #7956aa;
+    border-radius: 8px;
+
+    background: #30264e;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+.game-actions button:hover {
+    background: #49366f;
+    transform: translateY(-2px);
+}
+
+.game-actions button:focus-visible {
+    outline: 2px solid #41dfff;
+    outline-offset: 3px;
+}
+
+#restart-btn {
+    background: #75402b;
+    border-color: #e4a052;
+}
+
+#restart-btn:hover {
+    background: #955234;
+}
+
+@media (max-width: 480px) {
+    .game-actions {
+        justify-content: center;
+    }
+
+    .game-actions button {
+        padding: 8px 10px;
         font-size: 11px;
     }
 }

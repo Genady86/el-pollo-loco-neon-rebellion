@@ -33,5 +33,43 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
+/* ========================================
+   SOUND AN / AUS
+======================================== */
+
+// Sound ist standardmaessig eingeschaltet
+let soundEnabled = true;
+
+// Sound-Schaltflaeche aus HTML holen
+const soundButton = document.getElementById('sound-btn');
+
+// Auf einen Mausklick reagieren
+soundButton.addEventListener('click', () => {
+    // Zwischen an und aus wechseln
+    soundEnabled = !soundEnabled;
+
+    // Beschriftung aktualisieren
+    if (soundEnabled) {
+        soundButton.textContent = '🔊 Ton an';
+    } else {
+        soundButton.textContent = '🔇 Ton aus';
+    }
+
+    console.log('Sound aktiviert:', soundEnabled);
+});
+
+/* ========================================
+   SPIEL NEU STARTEN
+======================================== */
+
+// Neustart-Schaltflaeche aus HTML holen
+const restartButton = document.getElementById('restart-btn');
+
+// Auf einen Klick reagieren
+restartButton.addEventListener('click', () => {
+    // Aktuelle Webseite neu laden
+    window.location.reload();
+});
+
 // Spielwelt starten
 let world = new World(canvas, keyboard);
