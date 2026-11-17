@@ -1,3 +1,4 @@
+/** Sammelbare Goldmuenze. */
 class Coin extends MovableObject {
     constructor(x, y) {
         super();

@@ -1,0 +1,58 @@
+/* Zusatz-CSS; Original style.css wird nicht ersetzt. */
+[hidden] { display: none !important; }
+main { position: relative; width: min(96vw, 960px); }
+button { cursor: pointer; touch-action: none; }
+button:focus-visible, a:focus-visible { outline: 3px solid #41dfff; outline-offset: 3px; }
+.overlay-screen, .result-screen {
+    min-height: 360px; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 28px;
+    background: linear-gradient(135deg, #161126, #302049); border: 2px solid #9b45de;
+    border-radius: 14px; box-shadow: 0 0 28px #9b45de55;
+}
+.overlay-screen h2, .result-screen h2 { color: #41dfff; font-size: clamp(24px, 4vw, 42px); }
+.overlay-screen p { max-width: 520px; line-height: 1.5; }
+.overlay-screen a { color: #ffce65; }
+.screen-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.screen-actions button, .mobile-controls button { border: 1px solid #a36cff; border-radius: 9px;
+    padding: 12px 20px; background: #352258; color: white; font-weight: bold; }
+.result-screen { position: absolute; inset: 0; z-index: 10; min-height: 0; background: #241936ef; }
+.game-hud { width: 100%; flex-wrap: wrap; font-size: 20px; }
+.game-hud > div { display: flex; flex-direction: column; min-width: 105px; gap: 5px; }
+#canvas { width: 100%; max-width: 960px; aspect-ratio: 3 / 2; }
+.game-actions, .game-controls { width: 100%; }
+.help-dialog { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; }
+.help-backdrop { position: absolute; inset: 0; background: #000b; }
+.help-panel { position: relative; z-index: 1; width: min(92vw, 520px); padding: 28px;
+    border-radius: 15px; background: #241936; border: 2px solid #41dfff; }
+#help-close { position: absolute; right: 12px; top: 10px; background: transparent;
+    color: white; border: none; font-size: 30px; }
+.mobile-controls { display: none; }
+#rotate-screen { display: none; }
+@media (max-width: 1100px) and (orientation: landscape) and (pointer: coarse) {
+    body { padding: 4px; min-height: 100dvh; justify-content: flex-start; }
+    main { max-width: 95vw; }
+    .game-header { margin: 0 auto 5px; }
+    .game-actions { margin-bottom: 4px; }
+    .game-actions button { padding: 5px 8px; }
+    .game-hud { padding: 4px 8px; font-size: 13px; margin-bottom: 4px; }
+    #canvas { max-height: 56dvh; width: auto; max-width: 100%; margin: auto; }
+    .game-controls { display: none; }
+    .mobile-controls { display: flex; gap: 8px; justify-content: space-between;
+        padding: 4px; user-select: none; -webkit-user-select: none; }
+    .mobile-controls button { font-size: 16px; min-width: 56px; padding: 6px 12px; }
+}
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) {
+    #rotate-screen { display: flex; position: fixed; inset: 0; z-index: 30;
+        align-items: center; justify-content: center; flex-direction: column;
+        text-align: center; background: #111025; padding: 20px; }
+}
+@media (max-height: 540px) and (orientation: landscape) and (pointer: coarse) {
+    .game-header, .game-hud { display: none; }
+    .game-actions { padding: 2px; margin: 0 0 2px; }
+    .game-actions button { padding: 3px 8px; }
+    #canvas { max-height: 66dvh; }
+    .mobile-controls { margin-top: 2px; }
+}
+
+/* Bestehende Neon-Schmiede aus dem lokalen Kursprojekt. */
+#forge-status { margin: 4px 0 8px; color: #6df5ee; text-align: center; font-weight: bold; }

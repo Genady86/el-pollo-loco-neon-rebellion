@@ -1,101 +1,104 @@
 <!doctype html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>El Pollo Loco - Neon Rebellion</title>
-        <script src="models/keyboard.class.js"></script>
-        <script src="models/game-state.class.js"></script>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <!-- Spielsteuerung -->
-        <div class="game-actions">
-            <button id="sound-btn" type="button">🔇 Ton aus</button>
-
-            <button id="pause-btn" type="button">⏸ Pause</button>
-
-            <button id="restart-btn" type="button">↻ Neustart</button>
-        </div>
-
-        <header class="game-header">
-            <div class="game-brand">
-                <p class="game-kicker">EL POLLO LOCO</p>
-                <h1 class="neon-title">NEON <span>REBELLION</span></h1>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Pollo Loco – Neon Rebellion</title>
+    <link rel="icon" href="img/pico.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/spieloberflaeche.css" />
+    <link rel="stylesheet" href="css/neon-design.css" />
+</head>
+<body>
+    <header class="game-header">
+        <div class="game-brand"><p class="game-kicker">EL POLLO LOCO</p>
+            <h1 class="neon-title">NEON <span>REBELLION</span></h1></div>
+        <div class="level-badge"><small>LEVEL 01</small><strong>MEXIKO</strong></div>
+    </header>
+    <main>
+        <section id="home-screen" class="overlay-screen">
+            <h2>Willkommen in Mexiko</h2>
+            <p>Sammle Muenzen und Flaschen, springe auf Gegner und besiege den Endboss mit Flaschen.</p>
+            <div class="screen-actions">
+                <button id="start-btn" type="button">▶ Spielen</button>
+                <button id="help-btn" type="button">? Steuerung</button>
             </div>
-
-            <div class="level-badge">
-                <small>LEVEL 01</small>
-                <strong>MEXIKO</strong>
+            <p><a href="pages/impressum.html">Impressum</a></p>
+        </section>
+        <section id="game-screen" hidden>
+            <div class="game-actions">
+                <button id="sound-btn" type="button">🔇 Ton aus</button>
+                <button id="pause-btn" type="button">⏸ Pause</button>
+                <button id="fullscreen-btn" type="button">⛶ Vollbild</button>
             </div>
-        </header>
-
-        <!-- =====================================
-     PREMIUM HUD - LEBEN UND MUENZEN
-===================================== -->
-
-        <section class="game-hud">
-            <!-- Lebensanzeige -->
-            <div class="hud-lives">
-                <span class="hud-label">PICO · LEBEN</span>
-
-                <div class="hearts" aria-label="3 Leben">
-                    <span>♥</span>
-                    <span>♥</span>
-                    <span>♥</span>
-                </div>
-            </div>
-
-            <!-- Muenzanzeige -->
-            <div class="hud-coins">
-                <span class="hud-label">MÜNZEN</span>
-
-                <div class="coin-counter">
-                    <span>🪙</span>
-                    <strong id="coin-count">0 / 5</strong>
-                </div>
+            <section class="game-hud" aria-label="Statusanzeigen">
+                <div><span class="hud-label">PICO · LEBEN</span><strong id="life-count">100 / 100</strong></div>
+                <div><span class="hud-label">MUENZEN</span><strong id="coin-count">0 / 5</strong></div>
+                <div><span class="hud-label">FLASCHEN</span><strong id="bottle-count">0</strong></div>
+                <div><span class="hud-label">ENDBOSS</span><strong id="boss-count">100 / 100</strong></div>
+            </section>
+            <p id="forge-status" role="status" aria-live="polite">⚒️ Neon-Schmiede: Sammle 3 Münzen!</p>
+            <canvas id="canvas" width="720" height="480" aria-label="El Pollo Loco Spiel"></canvas>
+            <nav class="game-controls" aria-label="Tastaturbelegung">
+                <span class="control-hint"><kbd>A</kbd>/<kbd>D</kbd> Bewegen</span>
+                <span class="control-hint"><kbd>Leertaste</kbd> Springen</span>
+                <span class="control-hint"><kbd>F</kbd> Flasche werfen</span>
+                <span class="control-hint"><kbd>E</kbd> Schmiede</span>
+            </nav>
+            <nav class="mobile-controls" aria-label="Mobile Spielsteuerung">
+                <button type="button" data-key="LEFT">◀</button>
+                <button type="button" data-key="RIGHT">▶</button>
+                <button type="button" data-key="SPACE">⬆ Sprung</button>
+                <button type="button" data-key="THROW">◉ Wurf</button>
+            </nav>
+        </section>
+        <section id="result-screen" class="result-screen" hidden aria-live="polite">
+            <h2 id="result-title">GAME OVER</h2><p id="result-text"></p>
+            <div class="screen-actions">
+                <button id="restart-btn" type="button">↻ Neustart</button>
+                <button id="home-btn" type="button">⌂ Startseite</button>
             </div>
         </section>
-        <p id="forge-status" role="status" aria-live="polite">⚒️ Neon-Schmiede: Sammle 3 Münzen!</p>
-        <canvas id="canvas" width="720" height="480"></canvas>
-
-        <!-- Steuerung unterhalb der Spielbox -->
-        <nav class="game-controls" aria-label="Spielsteuerung">
-            <div class="control-hint">
-                <kbd>A</kbd>
-                <kbd>←</kbd>
-                <span>Links</span>
+        <section id="help-dialog" class="help-dialog" hidden role="dialog" aria-modal="true" aria-label="Steuerung">
+            <div class="help-backdrop" data-close-help></div>
+            <div class="help-panel"><button id="help-close" type="button" aria-label="Schliessen">×</button>
+                <h2>So spielst du</h2><p>A / D oder Pfeile links/rechts: bewegen.</p>
+                <p>Leertaste oder Pfeil hoch: springen. F: Flasche werfen. E: Schmiede.</p>
+                <p>Springe von oben auf die kleinen Gegner. Flaschen verletzen den Endboss.</p>
             </div>
-
-            <div class="control-hint">
-                <kbd>D</kbd>
-                <kbd>→</kbd>
-                <span>Rechts</span>
-            </div>
-
-            <div class="control-hint">
-                <kbd>LEERTASTE</kbd>
-                <span>Springen</span>
-            </div>
-
-            <div class="control-hint">
-                <kbd>E</kbd>
-                <span>Neon-Schmiede</span>
-            </div>
-        </nav>
-
-        <script src="models/movable-object.class.js"></script>
-        <script src="models/cloud.class.js"></script>
-        <script src="models/background-object.class.js"></script>
-        <script src="models/character.class.js"></script>
-        <script src="models/chicken.class.js"></script>
-        <script src="models/coin.class.js"></script>
-        <script src="models/obstacle.class.js"></script>
-        <script src="models/forge.class.js"></script>
-        <script src="models/level.class.js"></script>
-        <script src="levels/level1.js"></script>
-        <script src="models/world.class.js"></script>
-        <script src="models/audio-manager.class.js"></script>
-        <script src="script.js"></script>
-    </body>
+        </section>
+        <section id="rotate-screen" aria-live="polite"><h2>↻ Bitte Smartphone drehen</h2>
+            <p>Das Spiel funktioniert auf Mobilgeraeten im Querformat.</p></section>
+    </main>
+    <script src="classes/keyboard.class.js"></script>
+    <script src="classes/game-state.class.js"></script>
+    <script src="classes/movable-object.class.js"></script>
+    <script src="classes/cloud.class.js"></script>
+    <script src="classes/background-object.class.js"></script>
+    <script src="classes/coin.class.js"></script>
+    <script src="classes/bottle.class.js"></script>
+    <script src="classes/obstacle.class.js"></script>
+    <script src="classes/character-setup.class.js"></script>
+    <script src="classes/character-animation.class.js"></script>
+    <script src="classes/character.class.js"></script>
+    <script src="classes/chicken.class.js"></script>
+    <script src="classes/small-chicken.class.js"></script>
+    <script src="classes/endboss.class.js"></script>
+    <script src="classes/throwable-object.class.js"></script>
+    <script src="classes/particle.class.js"></script>
+    <script src="classes/status-bar.class.js"></script>
+    <script src="classes/forge.class.js"></script>
+    <script src="classes/level.class.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="classes/world-renderer.class.js"></script>
+    <script src="classes/collision-manager.class.js"></script>
+    <script src="classes/projectile-manager.class.js"></script>
+    <script src="classes/particle-manager.class.js"></script>
+    <script src="classes/world-setup.class.js"></script>
+    <script src="classes/world.class.js"></script>
+    <script src="classes/audio-manager.class.js"></script>
+    <script src="classes/game-controls.class.js"></script>
+    <script src="classes/game-ui.class.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
