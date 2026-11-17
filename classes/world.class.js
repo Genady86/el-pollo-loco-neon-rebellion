@@ -88,18 +88,28 @@ class World {
         this.collisionManager.damageCharacter(amount);
     }
 
-    /** Prüft, ob Pico die Schmiede benutzen darf. */
+    /** Prüft Entfernung und verfügbare Münzen. */
     interactWithForge() {
-        if (!this.forge || this.ended) return;
+        if (!this.forge || this.ended || GameState.isPaused) return;
         const center = this.character.x + this.character.width / 2;
         const forgeCenter = this.forge.x + this.forge.width / 2;
         if (Math.abs(center - forgeCenter) > 150) {
-            return GameUI.setForgeStatus('⚒️ Pico ist zu weit von der Schmiede entfernt.');
+            return GameUI.setForgeStatus('⚒️ Gehe näher an die Schmiede.');
         }
         if (this.collectedCoins - this.coinsSpent < this.forge.price) {
-            return GameUI.setForgeStatus('⚒️ Sammle erst 3 Münzen für die Schmiede.');
+            return GameUI.setForgeStatus('⚒️ Nicht genug Münzen für +2 Flaschen.');
         }
-        GameUI.setForgeStatus('⚒️ Schmiede erreicht! Die Revolver bleiben ein späteres Extra.');
+        this.craftBottles();
+    }
+
+    /** Tauscht drei Münzen gegen zwei Flaschen. */
+    craftBottles() {
+        this.coinsSpent += this.forge.price;
+        this.bottleCount += 2;
+        this.emitParticles(this.forge.x + 85, this.forge.y + 60, '#52e9ff');
+        audioManager.playSound('coin');
+        GameUI.updateHUD(this);
+        GameUI.setForgeStatus('⚒️ Geschmiedet! +2 Flaschen, 3 Münzen eingesetzt.');
     }
 
     /** Prüft, ob Pico eine Flasche werfen will. */

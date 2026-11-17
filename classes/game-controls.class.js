@@ -62,6 +62,12 @@ class GameControls {
     /** Reagiert auf die Handy-Knöpfe. */
     static touchKey(event, key, pressed) {
         event.preventDefault();
+        if (key === 'FORGE') {
+            if (pressed && world && !world.ended && !GameState.isPaused) {
+                world.interactWithForge();
+            }
+            return;
+        }
         keyboard[key] = pressed;
         this.handleImmediateKey(key, pressed);
     }

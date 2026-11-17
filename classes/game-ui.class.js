@@ -47,13 +47,16 @@ class GameUI {
     }
 
 
-    /** Zeigt, wann die Schmiede bereit ist. */
+    /** Zeigt verfügbare Münzen und Schmiedebereitschaft. */
     static updateForgeHint(game) {
         const element = document.getElementById('forge-status');
-        if (!element || game.forgeReached) return;
-        if (game.collectedCoins - game.coinsSpent >= 3) {
-            element.textContent = '⚒️ Schmiede bereit – gehe hin und drücke E.';
-        }
+        if (!element || !game.forge) return;
+        const available = game.collectedCoins - game.coinsSpent;
+        const ready = available >= game.forge.price;
+        element.classList.toggle('forge-ready', ready);
+        element.textContent = ready
+            ? '⚒️ Schmiede bereit! E drücken: +2 Flaschen.'
+            : '⚒️ Schmiede: ' + available + '/3 verfügbare Münzen.';
     }
 
     /** Zeigt einen Hinweis zur Schmiede. */

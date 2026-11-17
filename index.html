@@ -18,7 +18,7 @@
     <main>
         <section id="home-screen" class="overlay-screen">
             <h2>Willkommen in Mexiko</h2>
-            <p>Sammle Muenzen und Flaschen, springe auf Gegner und besiege den Endboss mit Flaschen.</p>
+            <p>Sammle Münzen und Flaschen, springe auf Gegner und besiege den Endboss mit Flaschen.</p>
             <div class="screen-actions">
                 <button id="start-btn" type="button">▶ Spielen</button>
                 <button id="help-btn" type="button">? Steuerung</button>
@@ -33,7 +33,7 @@
             </div>
             <section class="game-hud" aria-label="Statusanzeigen">
                 <div><span class="hud-label">PICO · LEBEN</span><strong id="life-count">100 / 100</strong></div>
-                <div><span class="hud-label">MUENZEN</span><strong id="coin-count">0 / 5</strong></div>
+                <div><span class="hud-label">MÜNZEN GESAMMELT</span><strong id="coin-count">0 / 5</strong></div>
                 <div><span class="hud-label">FLASCHEN</span><strong id="bottle-count">0</strong></div>
                 <div><span class="hud-label">ENDBOSS</span><strong id="boss-count">100 / 100</strong></div>
             </section>
@@ -50,6 +50,7 @@
                 <button type="button" data-key="RIGHT">▶</button>
                 <button type="button" data-key="SPACE">⬆ Sprung</button>
                 <button type="button" data-key="THROW">◉ Wurf</button>
+                <button type="button" data-key="FORGE">⚒️ Schmiede</button>
             </nav>
         </section>
         <section id="result-screen" class="result-screen" hidden aria-live="polite">
@@ -68,7 +69,7 @@
             </div>
         </section>
         <section id="rotate-screen" aria-live="polite"><h2>↻ Bitte Smartphone drehen</h2>
-            <p>Das Spiel funktioniert auf Mobilgeraeten im Querformat.</p></section>
+            <p>Das Spiel funktioniert auf Mobilgeräten im Querformat.</p></section>
     </main>
     <script src="classes/keyboard.class.js"></script>
     <script src="classes/game-state.class.js"></script>

@@ -193,3 +193,123 @@ body {
     .screen-actions button { transition: none; }
     .screen-actions button:hover { transform: none; }
 }
+
+/* FORGE-CRAFTING-1 */
+#forge-status.forge-ready {
+    color: #7dffdc;
+    animation: forge-ready-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes forge-ready-pulse {
+    50% {
+        text-shadow: 0 0 20px #52e9ff;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #forge-status.forge-ready {
+        animation: none;
+    }
+}
+
+@media (max-width: 1100px) and (orientation: landscape) and (pointer: coarse) {
+    .mobile-controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================
+   MOBILE-LANDSCAPE-FINISH-01
+   Kompaktes Layout ohne vertikales Scrollen
+========================================== */
+
+@media (max-height: 540px) and (orientation: landscape) and (pointer: coarse) {
+
+    body:has(#game-screen:not([hidden])) {
+        box-sizing: border-box;
+        height: 100dvh;
+        min-height: 0;
+        padding: 4px;
+        overflow: hidden;
+        justify-content: flex-start;
+    }
+
+    main:has(#game-screen:not([hidden])) {
+        width: 98vw;
+        max-width: 100%;
+        height: calc(100dvh - 8px);
+        overflow: hidden;
+    }
+
+    #game-screen:not([hidden]) {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        height: 100%;
+        min-height: 0;
+        align-items: center;
+    }
+
+    .game-header,
+    .game-hud,
+    .game-controls {
+        display: none;
+    }
+
+    .game-actions {
+        width: 100%;
+        gap: 6px;
+        padding: 0;
+        margin: 0;
+        justify-content: flex-end;
+    }
+
+    .game-actions button {
+        min-height: 32px;
+        padding: 4px 9px;
+        font-size: 12px;
+    }
+
+    #forge-status {
+        margin: 2px 0 4px;
+        font-size: 13px;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #canvas {
+        display: block;
+        justify-self: center;
+        align-self: center;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        min-height: 0;
+        aspect-ratio: 3 / 2;
+        margin: 0 auto;
+    }
+
+    .mobile-controls {
+        display: flex;
+        width: 100%;
+        gap: 4px;
+        margin: 0;
+        padding: 2px 0;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mobile-controls button {
+        min-width: 0;
+        min-height: 44px;
+        padding: 5px 8px;
+        font-size: clamp(12px, 2vw, 16px);
+        white-space: nowrap;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+}
