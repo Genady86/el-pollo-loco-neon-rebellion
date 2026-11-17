@@ -1,0 +1,38 @@
+# EL POLLO LOCO - NEON REBELLION
+# Developer Akademie - Modul 12
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Entwicklungsumgebungen
+.vscode/
+.idea/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Build- und Testdateien
+dist/
+coverage/
+test-results/
+playwright-report/
+
+# Temporäre Dateien
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Lokale Konfiguration und Zugangsdaten
+.env
+.env.*
+!.env.example
+
+# Cache
+.cache/
