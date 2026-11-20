@@ -313,3 +313,15 @@ body {
         -webkit-touch-callout: none;
     }
 }
+
+
+/* TOUCH-CONTROLS-LOCK-01 */
+.mobile-controls button {
+    -webkit-user-drag: none;
+}
+
+.mobile-controls button:active {
+    transform: scale(.96);
+    border-color: #52e9ff;
+    box-shadow: 0 0 16px rgba(82, 233, 255, .5);
+}

@@ -52,6 +52,8 @@ class GameControls {
     static bindTouch() {
         document.querySelectorAll('[data-key]').forEach((button) => {
             const key = button.dataset.key;
+            button.addEventListener('contextmenu', (event) => event.preventDefault());
+            button.addEventListener('dragstart', (event) => event.preventDefault());
             button.addEventListener('pointerdown', (event) => this.touchKey(event, key, true));
             button.addEventListener('pointerup', (event) => this.touchKey(event, key, false));
             button.addEventListener('pointercancel', (event) => this.touchKey(event, key, false));
