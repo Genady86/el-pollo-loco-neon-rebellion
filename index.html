@@ -1,6 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco – Neon Rebellion</title>
@@ -8,68 +8,120 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/spieloberflaeche.css" />
     <link rel="stylesheet" href="css/neon-design.css" />
-</head>
-<body>
+  </head>
+  <body>
     <header class="game-header">
-        <div class="game-brand"><p class="game-kicker">EL POLLO LOCO</p>
-            <h1 class="neon-title">NEON <span>REBELLION</span></h1></div>
-        <div class="level-badge"><small>LEVEL 01</small><strong>MEXIKO</strong></div>
+      <div class="game-brand">
+        <p class="game-kicker">EL POLLO LOCO</p>
+        <h1 class="neon-title">NEON <span>REBELLION</span></h1>
+      </div>
+      <div class="level-badge">
+        <small>LEVEL 01</small><strong>MEXIKO</strong>
+      </div>
     </header>
     <main>
-        <section id="home-screen" class="overlay-screen">
-            <h2>Willkommen in Mexiko</h2>
-            <p>Sammle Münzen und Flaschen, springe auf Gegner und besiege den Endboss mit Flaschen.</p>
-            <div class="screen-actions">
-                <button id="start-btn" type="button">▶ Spielen</button>
-                <button id="help-btn" type="button">? Steuerung</button>
-            </div>
-            <p><a href="pages/impressum.html">Impressum</a></p>
+      <section id="home-screen" class="overlay-screen">
+        <h2>Willkommen in Mexiko</h2>
+        <p>
+          Sammle Münzen und Flaschen, springe auf Gegner und besiege den Endboss
+          mit Flaschen.
+        </p>
+        <div class="screen-actions">
+          <button id="start-btn" type="button">▶ Spielen</button>
+          <button id="help-btn" type="button">? Steuerung</button>
+        </div>
+        <p><a href="pages/impressum.html">Impressum</a></p>
+      </section>
+      <section id="game-screen" hidden>
+        <div class="game-actions">
+          <button id="sound-btn" type="button">🔇 Ton aus</button>
+          <button id="pause-btn" type="button">⏸ Pause</button>
+          <button id="game-restart-btn" type="button">↻ Neustart</button>
+          <button id="fullscreen-btn" type="button">⛶ Vollbild</button>
+        </div>
+
+        <section class="game-hud" aria-label="Statusanzeigen">
+          <div>
+            <span class="hud-label">PICO · LEBEN</span
+            ><strong id="life-count">100 / 100</strong>
+          </div>
+          <div>
+            <span class="hud-label">MÜNZEN GESAMMELT</span
+            ><strong id="coin-count">0 / 5</strong>
+          </div>
+          <div>
+            <span class="hud-label">FLASCHEN</span
+            ><strong id="bottle-count">0</strong>
+          </div>
+          <div>
+            <span class="hud-label">ENDBOSS</span
+            ><strong id="boss-count">100 / 100</strong>
+          </div>
         </section>
-        <section id="game-screen" hidden>
-            <div class="game-actions">
-                <button id="sound-btn" type="button">🔇 Ton aus</button>
-                <button id="pause-btn" type="button">⏸ Pause</button>
-                <button id="fullscreen-btn" type="button">⛶ Vollbild</button>
-            </div>
-            <section class="game-hud" aria-label="Statusanzeigen">
-                <div><span class="hud-label">PICO · LEBEN</span><strong id="life-count">100 / 100</strong></div>
-                <div><span class="hud-label">MÜNZEN GESAMMELT</span><strong id="coin-count">0 / 5</strong></div>
-                <div><span class="hud-label">FLASCHEN</span><strong id="bottle-count">0</strong></div>
-                <div><span class="hud-label">ENDBOSS</span><strong id="boss-count">100 / 100</strong></div>
-            </section>
-            <p id="forge-status" role="status" aria-live="polite">⚒️ Neon-Schmiede: Sammle 3 Münzen!</p>
-            <canvas id="canvas" width="720" height="480" aria-label="El Pollo Loco Spiel"></canvas>
-            <nav class="game-controls" aria-label="Tastaturbelegung">
-                <span class="control-hint"><kbd>A</kbd>/<kbd>D</kbd> Bewegen</span>
-                <span class="control-hint"><kbd>Leertaste</kbd> Springen</span>
-                <span class="control-hint"><kbd>F</kbd> Flasche werfen</span>
-                <span class="control-hint"><kbd>E</kbd> Schmiede</span>
-            </nav>
-            <nav class="mobile-controls" aria-label="Mobile Spielsteuerung">
-                <button type="button" data-key="LEFT">◀</button>
-                <button type="button" data-key="RIGHT">▶</button>
-                <button type="button" data-key="SPACE">⬆ Sprung</button>
-                <button type="button" data-key="THROW">◉ Wurf</button>
-                <button type="button" data-key="FORGE">⚒️ Schmiede</button>
-            </nav>
-        </section>
-        <section id="result-screen" class="result-screen" hidden aria-live="polite">
-            <h2 id="result-title">GAME OVER</h2><p id="result-text"></p>
-            <div class="screen-actions">
-                <button id="restart-btn" type="button">↻ Neustart</button>
-                <button id="home-btn" type="button">⌂ Startseite</button>
-            </div>
-        </section>
-        <section id="help-dialog" class="help-dialog" hidden role="dialog" aria-modal="true" aria-label="Steuerung">
-            <div class="help-backdrop" data-close-help></div>
-            <div class="help-panel"><button id="help-close" type="button" aria-label="Schliessen">×</button>
-                <h2>So spielst du</h2><p>A / D oder Pfeile links/rechts: bewegen.</p>
-                <p>Leertaste oder Pfeil hoch: springen. F: Flasche werfen. E: Schmiede.</p>
-                <p>Springe von oben auf die kleinen Gegner. Flaschen verletzen den Endboss.</p>
-            </div>
-        </section>
-        <section id="rotate-screen" aria-live="polite"><h2>↻ Bitte Smartphone drehen</h2>
-            <p>Das Spiel funktioniert auf Mobilgeräten im Querformat.</p></section>
+        <p id="forge-status" role="status" aria-live="polite">
+          ⚒️ Neon-Schmiede: Sammle 3 Münzen!
+        </p>
+        <canvas
+          id="canvas"
+          width="720"
+          height="480"
+          aria-label="El Pollo Loco Spiel"
+        ></canvas>
+        <nav class="game-controls" aria-label="Tastaturbelegung">
+          <span class="control-hint"><kbd>A</kbd>/<kbd>D</kbd> Bewegen</span>
+          <span class="control-hint"><kbd>Leertaste</kbd> Springen</span>
+          <span class="control-hint"><kbd>F</kbd> Flasche werfen</span>
+          <span class="control-hint"><kbd>E</kbd> Schmiede</span>
+        </nav>
+        <nav class="mobile-controls" aria-label="Mobile Spielsteuerung">
+          <button type="button" data-key="LEFT">◀</button>
+          <button type="button" data-key="RIGHT">▶</button>
+          <button type="button" data-key="SPACE">⬆ Sprung</button>
+          <button type="button" data-key="THROW">◉ Wurf</button>
+          <button type="button" data-key="FORGE">⚒️ Schmiede</button>
+        </nav>
+      </section>
+      <section
+        id="result-screen"
+        class="result-screen"
+        hidden
+        aria-live="polite"
+      >
+        <h2 id="result-title">GAME OVER</h2>
+        <p id="result-text"></p>
+        <div class="screen-actions">
+          <button id="restart-btn" type="button">↻ Neustart</button>
+          <button id="home-btn" type="button">⌂ Startseite</button>
+        </div>
+      </section>
+      <section
+        id="help-dialog"
+        class="help-dialog"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-label="Steuerung"
+      >
+        <div class="help-backdrop" data-close-help></div>
+        <div class="help-panel">
+          <button id="help-close" type="button" aria-label="Schliessen">
+            ×
+          </button>
+          <h2>So spielst du</h2>
+          <p>A / D oder Pfeile links/rechts: bewegen.</p>
+          <p>
+            Leertaste oder Pfeil hoch: springen. F: Flasche werfen. E: Schmiede.
+          </p>
+          <p>
+            Springe von oben auf die kleinen Gegner. Flaschen verletzen den
+            Endboss.
+          </p>
+        </div>
+      </section>
+      <section id="rotate-screen" aria-live="polite">
+        <h2>↻ Bitte Smartphone drehen</h2>
+        <p>Das Spiel funktioniert auf Mobilgeräten im Querformat.</p>
+      </section>
     </main>
     <script src="classes/keyboard.class.js"></script>
     <script src="classes/game-state.class.js"></script>
@@ -101,5 +153,5 @@
     <script src="classes/game-controls.class.js"></script>
     <script src="classes/game-ui.class.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

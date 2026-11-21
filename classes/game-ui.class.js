@@ -31,21 +31,22 @@ class GameUI {
         const dialog = document.getElementById('result-screen');
         document.getElementById('result-title').textContent = victory ? 'SIEG!' : 'GAME OVER';
         document.getElementById('result-text').textContent = victory
-            ? 'El Pollo Grande ist besiegt!' : 'Pico braucht einen neuen Versuch.';
+            ? 'El Pollo Grande ist besiegt!'
+            : 'Pico braucht einen neuen Versuch.';
         dialog.hidden = false;
         GameControls.clearKeyboard();
     }
 
     /** Zeigt Münzen, Flaschen und Leben an. */
     static updateHUD(game) {
-        document.getElementById('coin-count').textContent = `${game.collectedCoins} / ${game.coins.length}`;
+        document.getElementById('coin-count').textContent =
+            `${game.collectedCoins} / ${game.coins.length}`;
         document.getElementById('bottle-count').textContent = String(game.bottleCount);
         document.getElementById('life-count').textContent = `${game.energy} / 100`;
         document.getElementById('boss-count').textContent = `${game.endboss.energy} / 100`;
         game.updateBars();
         this.updateForgeHint(game);
     }
-
 
     /** Zeigt verfügbare Münzen und Schmiedebereitschaft. */
     static updateForgeHint(game) {
@@ -109,12 +110,17 @@ class GameUI {
     static bindButtons() {
         document.getElementById('start-btn').addEventListener('click', () => this.startGame());
         document.getElementById('restart-btn').addEventListener('click', () => this.startGame());
+        document
+            .getElementById('game-restart-btn')
+            .addEventListener('click', () => this.startGame());
         document.getElementById('home-btn').addEventListener('click', () => this.showHome());
         document.getElementById('sound-btn').addEventListener('click', () => this.toggleSound());
         document.getElementById('pause-btn').addEventListener('click', () => this.togglePause());
         document.getElementById('help-btn').addEventListener('click', () => this.showHelp());
         document.getElementById('help-close').addEventListener('click', () => this.closeHelp());
-        document.getElementById('fullscreen-btn').addEventListener('click', () => this.fullscreen());
+        document
+            .getElementById('fullscreen-btn')
+            .addEventListener('click', () => this.fullscreen());
     }
 
     /** Schließt die Spielanleitung. */
