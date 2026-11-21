@@ -3,6 +3,10 @@ class WorldRenderer {
     constructor(world) {
         this.world = world;
         this.ctx = world.ctx;
+        this.fiestaSky = new Image();
+        this.fiestaSky.src = 'img/fiesta/himmel-berge.webp';
+        this.fiestaVillage = new Image();
+        this.fiestaVillage.src = 'img/fiesta/dorf-klassisch.webp';
     }
 
     /** Reihenfolge der Ebenen bestimmt die Tiefenwirkung. */
@@ -15,8 +19,25 @@ class WorldRenderer {
         this.drawStatusBars();
     }
 
-    /** Drei 720px-Hintergrundbilder wiederholen sich ohne Luecke. */
+    /** Zeigt unseren neuen Fiesta-Hintergrund. */
     drawBackground() {
+        this.drawOldBackground();
+        if (!this.fiestaSky.naturalWidth || !this.fiestaVillage.naturalWidth) return;
+        this.drawFiestaLayer(this.fiestaSky, 0, 440, .1);
+        this.drawFiestaLayer(this.fiestaVillage, 85, 355, .75);
+    }
+
+    /** Zeichnet Bilder nebeneinander ohne Luecken. */
+    drawFiestaLayer(image, y, height, speed) {
+        const width = image.naturalWidth * height / image.naturalHeight;
+        const shift = (this.world.cameraX * speed) % width;
+        for (let x = -shift; x < this.world.canvas.width; x += width) {
+            this.ctx.drawImage(image, Math.round(x), y, Math.ceil(width) + 1, height);
+        }
+    }
+
+    /** Drei 720px-Hintergrundbilder wiederholen sich ohne Luecke. */
+    drawOldBackground() {
         const images = this.world.backgroundObjects;
         const camera = this.world.cameraX * .75;
         const first = Math.floor(camera / 720);
